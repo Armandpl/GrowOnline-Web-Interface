@@ -158,13 +158,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main content -->
         <section class="content">
 
+        <div class="box box-primary">
+        <div class="box-body">
+        <div class="row">
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <h4>Profile Name</h4>
+          <div class="form-group">
+          <input name="profile" type="text" min="0" class="form-control" required/>
+          </div>        
+        </div>  
+        </div>
+
+        <div class="row">
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="form-group">
+          <textarea class="form-control" rows="2" placeholder="Write a short description" maxlength="100" required></textarea>
+          </div>        
+        </div>  
+
+        </div>
+
         <div class="row">
 
             <div class="col-md-6 col-sm-12">
               <div class="box box-danger">
 
                   <div class="box-header with-border">
-                    <span class="glyphicon glyphicon-info-sign">
+                    <span class="ion ion-android-sunny">
                       <h3 class="box-title">Lamp</h3>
                   </div><!-- /.box-header -->
 
@@ -193,23 +215,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <div class="box box-gray">
 
                     <div class="box-header with-border">
-                      <span class="fa fa-desktop">
+                      <span class="ion ion-load-b">
                         <h3 class="box-title">Fan</h3>
                     </div><!-- /.box-header -->
 
                     <div class="box-body">
 
                       <div class="col-sm-3 col-xs-12">
-                       <h5>Interval</h5>
+                       <h5>Working Time</h5>
                         <div class="form-group">
-                        <input name="interval" type="time" value="" class="form-control" required/>
+                        <input name="working_time" type="time" value="" class="form-control" required/>
                         </div>        
                       </div>      
                               
                       <div class="col-sm-3 col-xs-12">
-                       <h5>Working Time</h5>
+                       <h5>Interval</h5>
                         <div class="form-group">
-                        <input name="working_time" type="time" value="" class="form-control" required/>
+                        <input name="interval" type="time" value="" class="form-control" required/>
                         </div>        
                       </div>          
 
@@ -225,39 +247,39 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <div class="box box-info">
 
                   <div class="box-header with-border">
-                    <span class="fa fa-circle-o">
+                    <span class="ion ion-waterdrop">
                       <h3 class="box-title">Sprinkle</h3>
                   </div><!-- /.box-header -->
 
                   <div class="box-body">
-                    <div class="col-sm-3 col-xs-12" id="water_days">
+                    <div class="col-sm-4 col-xs-12" id="water_days">
                       <h4>Water Days</h4>
 
-                            <label>
+                            <label style="display:block;">
                               <input type="checkbox" class="flat-red" >
                               Monday
                             </label> 
-                            <label>
+                            <label style="display:block;">
                               <input type="checkbox" class="flat-red" >
                               Tuesday
                             </label> 
-                            <label>
+                            <label style="display:block;">
                               <input type="checkbox" class="flat-red" >
                               Wednesday
                             </label> 
-                            <label>
+                            <label style="display:block;">
                               <input type="checkbox" class="flat-red" >
                               Thursday
                             </label> 
-                            <label>
+                            <label style="display:block;">
                               <input type="checkbox" class="flat-red" >
                               Friday
                             </label> 
-                            <label>
+                            <label style="display:block;">
                               <input type="checkbox" class="flat-red" >
                               Saturday
                             </label> 
-                            <label>
+                            <label style="display:block;">
                               <input type="checkbox" class="flat-red" >
                               Sunday
                             </label> 
@@ -265,28 +287,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             
                       </div>  
 
-                    <div class="col-sm-3 col-xs-12">
+                    <div class="col-sm-4 col-xs-12">
                      <h5>Tank Capacity</h5> 
                       <div class="form-group">
-                      <input name="tank_capacity" type="number" min="0" step="0.1" class="form-control" required/>cL
+                      <input name="tank_capacity" type="number" min="0" step="0.1" class="form-control" required/>
                       </div>        
                     </div>      
                             
-                    <div class="col-sm-3 col-xs-12">
+                    <div class="col-sm-4 col-xs-12">
                      <h5>Pump Flow</h5>
                       <div class="form-group">
-                      <input name="pump_flow" type="number" min="0" step="0.1" class="form-control" required/>cL/min
+                      <input name="pump_flow" type="number" min="0" step="0.1" class="form-control" required/>
                       </div>        
                     </div>          
                       
-                    <div class="col-sm-3 col-xs-12">
+                    <div class="col-sm-4 col-xs-12">
                      <h5>Watering Hour</h5>
                       <div class="form-group">
                       <input name="watering_hour" type="time" value="" class="form-control" required/>
                       </div>        
                     </div>      
                     
-                    <div class="col-sm-3 col-xs-12">
+                    <div class="col-sm-4 col-xs-12">
                      <h5>Amount of water</h5>
                       <div class="form-group">
                       <input name="water" type="number" min="0" step="0.1" class="form-control" required/>
@@ -301,7 +323,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <div class="box box-success">
 
                     <div class="box-header with-border">
-                      <span class="fa fa-safari">
+                      <span class="ion ion-leaf">
                         <h3 class="box-title">Environnement</h3>
                     </div><!-- /.box-header -->
 
@@ -327,6 +349,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
             
         </div><!--/.row-->
+
+        <div class="row">
+        <div class="pull-right" style="margin-right: 15px;">
+        <button type="submit" class="btn btn-success btn-lg">Save</button> <button type="cancel" class="btn bg-gray btn-lg">cancel</button>
+        </div>
+        </div>
+
+        </div>
+        </div>
         </section><!-- /.content -->
 
       </div><!-- /.content-wrapper -->
