@@ -61,7 +61,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <header class="main-header">
 
         <!-- Logo -->
-        <a href="index3.html" class="logo">
+        <a href="dashboard.html" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>G</b>O</span>
           <!-- logo for regular state and mobile devices -->
@@ -118,10 +118,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                    <a href="#" class="btn btn-default btn-flat">Edit</a>
+                    <a href="editUserProfile.html" class="btn btn-default btn-flat">Edit</a>
                     </div>
                     <div class="pull-right">
-                      <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                      <a href="login.html" class="btn btn-default btn-flat">Sign out</a>
                     </div>
                   </li>
                 </ul>
@@ -143,7 +143,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Optionally, you can add icons to the links -->
             <li><a href="dashboard.html"><i class="fa fa-tv"></i> <span>Dashboard</span></a></li>
             <li><a href="profiles.html"><i class="fa fa-link"></i> <span>Profiles</span></a></li>
-            <li class="active"><a href="#"><i class="fa fa-gear"></i> <span>Settings</span></a></li>
+            <li><a href="settings.html"><i class="fa fa-gear"></i> <span>Settings</span></a></li>
           </ul><!-- /.sidebar-menu -->
         </section>
         <!-- /.sidebar -->
@@ -153,7 +153,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-         
+         <h1>
+            User Profile
+          </h1>
         </section>
 
         <!-- Main content -->
@@ -161,132 +163,55 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         <div class="row">
 
-            <div class="col-xs-12">   
+          <div class="col-xs-12 col-md-6 col-md-offset-3">
 
+              <!-- Profile Image -->
               <div class="box box-primary">
+                <div class="box-body box-profile">
+                  <img class="profile-user-img img-responsive img-circle" src="dist/img/user4-128x128.jpg" alt="User profile picture">
+                  <h3 class="profile-username text-center">
+                    <span contenteditable="true">Armand</span>
+                    <span class="fa fa-edit"></span>
+                  </h3>
+                  <p class="text-muted text-center">Admin</p>    
 
-                <div class="box-header with-border">              
-                  <h3 class="box-title">Users</h3>
-                </div><!-- /.box-header -->
 
-                <div class="box-body">
-
-                  <div style="display:inline-block;" class="col-xs-1">
-                    <img src="dist/img/user2-160x160.jpg" width="50" height="50" class="img-circle" alt="User Image" class="col-xs-1">
-                    <p>
-                      Armand
-                    </p>
-                  </div>
-
-                  <div style="display:inline-block;" class="col-xs-1">
-                    <img src="dist/img/user2-160x160.jpg" width="50" height="50" class="img-circle" alt="User Image">
-                    <p>
-                      Lucas
-                    </p>
-                  </div>
-
-                  <div style="display:inline-block;" class="col-xs-1">
-                    <img src="dist/img/user2-160x160.jpg" width="50" height="50" class="img-circle" alt="User Image">
-                    <p>
-                      Mathias
-                    </p>
-                  </div>
-
-                  <div style="display:inline-block;" class="col-xs-1">
-                    <img src="dist/img/user2-160x160.jpg" width="50" height="50" class="img-circle" alt="User Image">
-                    <p>
-                      André
-                    </p>
-                  </div>
-
-                  <div style="display:inline-block;" class="col-xs-1">
-                    <img src="dist/img/user2-160x160.jpg" width="50" height="50" class="img-circle" alt="User Image">
-                    <p>
-                      Florence
-                    </p>
-                  </div>
-
-                  <a href="" class="btn btn-app">
-                    <i class="ion ion-plus"></i> Add
-                  </a>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="col-xs-12">   
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
                        
-              <div class="box box-primary">
+            <div class="box box-primary">
 
-                <div class="box-header with-border">              
-                  <h3 class="box-title">SMS API</h3>                  
-                </div><!-- /.box-header -->
+              <div class="box-header with-border">              
+                <h3 class="box-title">Alerts/Notifications</h3>
+              </div><!-- /.box-header -->
 
-                <div class="box-body">
-                <div class="col-xs-12">
-                  <div class="form-group">
-                  <label>Copy/Paste your SMS API link down below to receive SMS notifications.</label>                
-                  <input placeholder="API link" type="text" min="0" class="form-control" required/>
-                  <div class="pull-right" style="margin-top:10px;">
-                   <button class="btn btn-primary">Save</button>
-                  </div>  
-                  </div>    
-                </div>                        
-
-                </div>
-
+              <div class="box-body">
               </div>
 
-            </div>
-
-            <div class="col-xs-12">   
+            </div> 
                        
-              <div class="box box-primary">
+            <div class="box box-primary">
 
-                <div class="box-header with-border">              
-                  <h3 class="box-title">Wifi Config</h3>
-                </div><!-- /.box-header -->
+              <div class="box-header with-border">              
+                <h3 class="box-title">SMS API</h3>                  
+              </div><!-- /.box-header -->
 
-                <div class="box-body">
-                  <div class="col-xs-12">              
-                    <div class="form-group">
-                      <label>Security Type</label>
-                      <select class="form-control">
-                        <option>None</option>
-                        <option>Wep</option>
-                        <option>WPA/PSK</option>
-                      </select>
-                      <label>SSID</label>
-                      <input placeholder="SSID" type="text" min="0" class="form-control" required/>
-                      <label>Password</label>
-                      <input placeholder="Password" type="text" min="0" class="form-control" required/>
-                      <div class="pull-right" style="margin-top:10px;">
-                       <button class="btn btn-primary">Save</button>
-                      </div>      
-                    </div>
-                </div>
+              <div class="box-body">
+              <div class="col-xs-12">
+                <div class="form-group">
+                <label>Copy/Paste your SMS API link down below to receive SMS notifications.</label>                
+                <input placeholder="API link" type="text" min="0" class="form-control" required/>
+                <div class="pull-right" style="margin-top:10px;">
+                 <button class="btn btn-primary">Save</button>
+                </div>  
+                </div>    
+              </div>                        
 
               </div>
 
-            </div>
+            </div> 
 
-            <div class="col-xs-12">   
-                       
-              <div class="box box-primary">
-
-                <div class="box-header with-border">              
-                  <h3 class="box-title">Alerts/Notifications</h3>
-                </div><!-- /.box-header -->
-
-                <div class="box-body">
-                </div>
-
-              </div>
-
-            </div>
-
+            </div><!-- /.col -->
           
         </div> <!--/.row-->
         </section><!-- /.content -->
