@@ -24,7 +24,7 @@ catch (Exception $e){
 $alertemail = 0;
 $alertsms = 0;
 $admin = 0;
-if(!empty($_POST["alertemail"])) $alertemail = 1;
+if(!empty($_POST["alertemail"]) && $_POST["alertemail"] == "on") $alertemail = 1;
 if(!empty($_POST["alertsms"])) $alertsms = 1;
 if(!empty($_POST["admin"])) $admin = 1;
 

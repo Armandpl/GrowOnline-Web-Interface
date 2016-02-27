@@ -171,33 +171,66 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <form class="form-horizontal">
                   <div class="box-body">
                     <div class="form-group">
-                      <label for="inputEmail3" class="col-sm-2 control-label">Username</label>
+                      <label for="inputLogin" class="col-sm-2 control-label">Username</label>
                       <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputEmail3" placeholder="Enter username">
+                        <input type="text" class="form-control" id="inputLogin" placeholder="Enter username">
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+                      <label for="inputPass" class="col-sm-2 control-label">Password</label>
                       <div class="col-sm-10">
-                        <input type="password" class="form-control" id="inputPassword3" placeholder="Enter password">
+                        <input type="password" class="form-control" id="inputPass" placeholder="Enter password">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="inputEmail" class="col-sm-2 control-label">E-mail</label>
+                      <div class="col-sm-10">
+                        <input type="email" class="form-control" id="inputEmail" placeholder="Enter e-mail address">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="inputMobile" class="col-sm-2 control-label">Mobile Phone</label>
+                      <div class="col-sm-10">
+                        <input type="tel" class="form-control" id="inputMobile" placeholder="Enter mobile phone number">
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="col-sm-2 control-label">Rights</label>
                       <div class="col-sm-10">
-                        <select class="form-control">
-                        <option>User</option>
-                        <option>Admin</option>
+                        <select id="rights" class="form-control">
+                        <option value="0" >User</option>
+                        <option value="1" >Admin</option>
                         </select>
                       </div>
+                    </div>                    <div class="form-group">
+                      <label class="col-sm-2 control-label">E-mail alerts</label> 
+                      <div class="col-sm-10">
+                        <input id="emailalerts" type="checkbox" class="flat-red" >
+                      </div>
                     </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">SMS alerts</label> 
+                      <div class="col-sm-10">
+                        <input id="smsalerts" type="checkbox" class="flat-red" >
+                      </div>
+                    </div>
+
+                    <div class="form-group" id="apikeycontain">
+                      <label for="apikey" class="col-sm-2 control-label">SMS api key</label>
+                      <div class="col-sm-10">
+                        <input type="text-" class="form-control" id="inputApikey" placeholder="Enter your SMS api key">
+                      </div>
+                    </div>
+
+                    
                   </div><!-- /.box-body -->
+                  </form>
                   <div class="box-footer">
                     <div class="pull-right">
-                        <button class="btn btn-default">Cancel</button> <button class="btn btn-primary">Add</button>
+                        <button id="cancelButton" class="btn btn-default">Cancel</button> <button class="btn btn-primary" id="addButton">Add</button>
                     </div>
                   </div><!-- /.box-footer -->
-                </form>
+                
               </div><!-- /.box -->
               </div>  
             </div>
@@ -256,6 +289,51 @@ scratch. This page gets rid of all links and provides the needed markup only.
           checkboxClass: 'icheckbox_flat-green',
           radioClass: 'iradio_flat-green'
         });
+
+        $("#addButton").click(function(){
+          alert('test');
+          var login = $('#inputLogin').val();
+          var pass = $('#inputPass').val();
+          var email = $('#inputEmail').val();
+          var mobile = $('#inputMobile').val();
+          var rights = $('#rights :selected').val();
+          var apikey = $('#inputApiKey').val();
+          var emailalerts = $('#emailalerts').is(':checked');
+          var smsalerts = $('#smsalerts').is(':checked');
+          $.ajax({
+            url : 'api/addUser.php',
+            type : 'POST',
+            data : 'login=' + login + '&pass=' + pass + '&email'+ email + '&mobile=' + mobile + '&alertemail=' + emailalerts + '&alertsms=' + smsalerts + '&admin=' + rights,
+            dataType : 'html',
+            success : function(result, status){
+              alert(result);
+            },
+
+            error : function(result, statut, error){
+              //alert(error);
+            }
+
+          });
+   
+      });
+
+      /*$("#cancelButton").click(function(){
+        //alert("test");
+        var checkTest = $('#smsalerts').is(':checked');
+        var e = document.getElementById('apikeycontain');
+          if(checkTest){
+            //$("#apikeycontain").html('<label for="apikey" class="col-sm-2 control-label">SMS api key</label><div class="col-sm-10"><input type="email" class="form-control" id="apikey" placeholder="Enter your SMS api key"></div>');
+            e.innerHTML = '<label for="apikey" class="col-sm-2 control-label">SMS api key</label><div class="col-sm-10"><input type="email" class="form-control" id="apikey" placeholder="Enter your SMS api key"></div>';
+          }
+          else{
+            //$("#apikeycontain").html(' ');
+            e.innerHTML = "";
+          }
+          
+   
+      });*/
+
     </script>  
   </body>
 </html>
+
