@@ -182,7 +182,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <a href="editUserProfile.html" class="btn btn-default btn-flat">Edit</a>
                     </div>
                     <div class="pull-right">
-                      <a href="login.html" class="btn btn-default btn-flat">Sign out</a>
+                      <a href="api/logout.php" class="btn btn-default btn-flat">Sign out</a>
                     </div>
                   </li>
                 </ul>
@@ -609,6 +609,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
             data : '',
             dataType : 'html',
             success : function(result, status){
+              if(result == "403"){
+                alert("You must be connected.");
+                window.location.href = "index.php";
+
+
+              }
               if(result != "false"){
                 var array = result.split(";");
                 $("#currentProfile").html(array[0]);
