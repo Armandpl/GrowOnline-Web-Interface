@@ -3,9 +3,14 @@
 METHOD: GET
 RETURN: profileName;temperature;humidity;lamp;fan;pump;putime
 */
-
+ini_set("display_errors",0);
+error_reporting(0);
 include("config.php");
-
+session_start();
+if(empty($_SESSION["login"])){
+	echo("403");
+	exit;
+}
 try{
 	$bdd = new PDO("mysql:host=" . $configHostBdd . ";dbname=" . $configNameBdd .";charset=utf8", $configUserBdd, $configPassBdd);
 }
