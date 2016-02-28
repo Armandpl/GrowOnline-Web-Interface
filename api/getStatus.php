@@ -3,7 +3,8 @@
 METHOD: GET
 RETURN: profileName;temperature;humidity;lamp;fan;pump;putime
 */
-
+ini_set("display_errors",0);
+error_reporting(0);
 include("config.php");
 
 try{
