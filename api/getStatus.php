@@ -35,31 +35,31 @@ $result->closeCursor();
 
 
 $result = $bdd->query('SELECT * FROM `env` ORDER BY `Date_` DESC LIMIT 1');
-while($data = $result->fetch()){
-	$humidity = $data["Hum"];
-	$temperature = $data["Temp"];
-}
+$data = $result->fetch();
+$humidity = $data["Hum"];
+$temperature = $data["Temp"];
+
 $result->closeCursor();
 
 
-if(exec("gpio read 3")=="1"){
+if(exec("gpio read 5")=="1"){
 	$lamp = "OFF";
 }
-else if(exec("gpio read 3")=="0"){
+else if(exec("gpio read 5")=="0"){
 	$lamp = "ON";
 }
 
-if(exec("gpio read 2")=="1"){
+if(exec("gpio read 6")=="1"){
 	$fan = "OFF";
 }
-else if(exec("gpio read 2")=="0"){
+else if(exec("gpio read 6")=="0"){
 	$fan = "ON";
 }
 
-if(exec("gpio read 0")=="1"){
+if(exec("gpio read 13")=="1"){
 	$pump = "OFF";
 }
-else if(exec("gpio read 0")=="0"){
+else if(exec("gpio read 13")=="0"){
 	$pump = "ON";
 }
 

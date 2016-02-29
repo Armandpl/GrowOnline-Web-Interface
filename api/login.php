@@ -14,7 +14,7 @@ catch (Exception $e){
 }
 
 if(empty($_POST["login"]) || empty($_POST["pass"])){
-	header("Location: ../login.html?false");
+	header("Location: ../login.php?false");
 	exit();
 }
 
@@ -29,17 +29,24 @@ $request ->execute(array(
 $result = $request->fetch();
 
 if (!$result){
-    header("Location: ../login.html?logins");
+    header("Location: ../login.php?logins");
 	exit();
 }
 else{
 	session_start();
 	$_SESSION["login"] = $result["login"];
-	if($result["admin"] == 1) $_SESSION["admin"] = true;
-	header("Location: ../dashboard.html");
+	$_SESSION["id"] = $result["id"];
+	if(empty($result["avatar"])) $_SESSION["avatar"] = "dist/img/user2-160x160.jpg";
+	else $_SESSION["avatar"] = $result["avatar"];
+	$_SESSION["status"] = "User";
+	if($result["admin"] == 1){
+		$_SESSION["admin"] = true;
+		$_SESSION["status"] = "Admin";
+	}
+	header("Location: ../dashboard.php");
 	exit();
 }
-header("Location: ../login.html?false");
+header("Location: ../login.php?false");
 exit();
 
 ?>

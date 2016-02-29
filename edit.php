@@ -1,3 +1,11 @@
+<?php
+include("api/config.php");
+session_start();
+if(empty($_SESSION["login"])){
+  header("location: index.php");
+  exit;
+}
+?>
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -63,7 +71,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <header class="main-header">
 
         <!-- Logo -->
-        <a href="dashboard.html" class="logo">
+        <a href="dashboard.php" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>G</b>O</span>
           <!-- logo for regular state and mobile devices -->
@@ -85,48 +93,71 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Menu toggle button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-bell-o"></i>
-                  <span class="label label-info">10</span>
+                  <!--<span class="label label-info">10</span>-->
                 </a>
                 <ul class="dropdown-menu">
-                  <li class="header">You have 10 notifications</li>
+                  <li class="header">No notifications</li>
                   <li>
                     <!-- Inner Menu: contains the notifications -->
                     <ul class="menu">
-                      <li><!-- start notification -->
+                      <!--<li>
                         <a href="#">
                           <i class="fa fa-users text-aqua"></i> 5 new members joined today
                         </a>
-                      </li><!-- end notification -->
+                      </li>--><!-- end notification -->
                     </ul>
                   </li>
                   <li class="footer"><a href="#">View all</a></li>
                 </ul>
               </li>              
               <!-- User Account: style can be found in dropdown.less -->
+
+<?php
+try{
+  $bdd = new PDO("mysql:host=" . $configHostBdd . ";dbname=" . $configNameBdd .";charset=utf8", $configUserBdd, $configPassBdd);
+}
+catch (Exception $e){
+  die($e->getMessage());
+}
+
+$request = $bdd->prepare('SELECT * FROM users WHERE id = :id');
+$request ->execute(array(
+    'id' => $_SESSION["id"]
+    ));
+
+$data = $request->fetch();
+
+if(empty($data["avatar"])) $avatar = "dist/img/user2-160x160.jpg";
+else $avatar = $data["avatar"];
+
+if($data["admin"] == 1) $status = "Admin";
+else $status = "User";
+?>
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                  <span class="hidden-xs">Armand</span>
+                  <img src="<?php echo($avatar) ?>" class="user-image" alt="User Image">
+                  <span class="hidden-xs"><?php echo($data["login"])?></span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    <img src="<?php echo($avatar) ?>" class="img-circle" alt="User Image">
                     <p>
-                      Armand
-                      <small>Admin</small>
+                      <?php echo($data["login"])?>
+                      <small><?php echo($status) ?></small>
                     </p>
                   </li>
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                    <a href="editUserProfile.html" class="btn btn-default btn-flat">Edit</a>
+                    <a href="editUserProfile.php" class="btn btn-default btn-flat">Edit</a>
                     </div>
                     <div class="pull-right">
                       <a href="api/logout.php" class="btn btn-default btn-flat">Sign out</a>
                     </div>
                   </li>
                 </ul>
+
               </li>
               
             </ul>
@@ -143,9 +174,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <ul class="sidebar-menu">
             <!--<li class="header">HEADER</li>-->
             <!-- Optionally, you can add icons to the links -->
-            <li><a href="dashboard.html"><i class="fa fa-tv"></i> <span>Dashboard</span></a></li>
-            <li><a href="profiles.html"><i class="fa fa-link"></i> <span>Profiles</span></a></li>
-            <li><a href="settings.html"><i class="fa fa-gear"></i> <span>Settings</span></a></li>
+            <li><a href="dashboard.php"><i class="fa fa-tv"></i> <span>Dashboard</span></a></li>
+            <li><a href="profiles.php"><i class="fa fa-link"></i> <span>Profiles</span></a></li>
+            <li><a href="settings.php"><i class="fa fa-gear"></i> <span>Settings</span></a></li>
           </ul><!-- /.sidebar-menu -->
         </section>
         <!-- /.sidebar -->
@@ -157,27 +188,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <section class="content-header">
          
         </section>
-
         <!-- Main content -->
         <section class="content">
-
+        
         <div class="box box-primary">
         <div class="box-body">
+
         <div class="row">
 
         <div class="col-md-4 col-sm-6 col-xs-12">
           <h4>Profile Name</h4>
           <div class="form-group">
-          <input name="profile" type="text" min="0" class="form-control" required/>
+          <input id="inputName" name="profile" type="text" min="0" class="form-control" required/>
           </div>        
         </div>  
         </div>
 
         <div class="row">
 
+
         <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="form-group">
-          <textarea class="form-control" rows="2" placeholder="Write a short description" maxlength="100" required></textarea>
+          <textarea class="form-control" id="inputDescription" rows="2" placeholder="Write a short description" maxlength="100" required></textarea>
           </div>        
         </div>  
 
@@ -198,14 +230,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <div class="col-sm-3 col-xs-12">
                        <h5>Sunrise</h5>
                         <div class="form-group">
-                        <input name="sunrise" type="time" value="" class="form-control" required/>
+                        <input id="inputSunrise" name="sunrise" type="time" value="" class="form-control" required/>
                         </div>        
                       </div>      
                               
                       <div class="col-sm-3 col-xs-12">
                        <h5>Sunset</h5>
                         <div class="form-group">
-                        <input name="sunset" type="time" value="" class="form-control" required/>
+                        <input id="inputSunset" name="sunset" type="time" value="" class="form-control" required/>
                         </div>        
                       </div>          
 
@@ -227,14 +259,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <div class="col-sm-3 col-xs-12">
                        <h5>Working Time</h5>
                         <div class="form-group">
-                        <input name="working_time" type="time" value="" class="form-control" required/>
+                        <input id="inputWorkingTime" name="working_time" type="time" value="" class="form-control" required/>
                         </div>        
                       </div>      
                               
                       <div class="col-sm-3 col-xs-12">
                        <h5>Interval</h5>
                         <div class="form-group">
-                        <input name="interval" type="time" value="" class="form-control" required/>
+                        <input id="inputInterval" name="interval" type="time" value="" class="form-control" required/>
                         </div>        
                       </div>          
 
@@ -259,31 +291,31 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <h4>Water Days</h4>
 
                             <label style="display:block;">
-                              <input type="checkbox" class="flat-red" >
+                              <input id="inputMonday" type="checkbox" class="flat-red" >
                               Monday
                             </label> 
                             <label style="display:block;">
-                              <input type="checkbox" class="flat-red" >
+                              <input id="inputTuesday" type="checkbox" class="flat-red" >
                               Tuesday
                             </label> 
                             <label style="display:block;">
-                              <input type="checkbox" class="flat-red" >
+                              <input id="inputWednesday" type="checkbox" class="flat-red" >
                               Wednesday
                             </label> 
                             <label style="display:block;">
-                              <input type="checkbox" class="flat-red" >
+                              <input id="inputThursday" type="checkbox" class="flat-red" >
                               Thursday
                             </label> 
                             <label style="display:block;">
-                              <input type="checkbox" class="flat-red" >
+                              <input id="inputFriday" type="checkbox" class="flat-red" >
                               Friday
                             </label> 
                             <label style="display:block;">
-                              <input type="checkbox" class="flat-red" >
+                              <input id="inputSaturday" type="checkbox" class="flat-red" >
                               Saturday
                             </label> 
                             <label style="display:block;">
-                              <input type="checkbox" class="flat-red" >
+                              <input id="inputSunday" type="checkbox" class="flat-red" >
                               Sunday
                             </label> 
 
@@ -293,28 +325,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="col-sm-4 col-xs-12">
                      <h5>Tank Capacity</h5> 
                       <div class="form-group">
-                      <input name="tank_capacity" type="number" min="0" step="0.1" class="form-control" required/>
+                      <input id="inputTankCapacity" name="tank_capacity" type="number" min="0" step="0.1" class="form-control" required/>
                       </div>        
                     </div>      
                             
                     <div class="col-sm-4 col-xs-12">
                      <h5>Pump Flow</h5>
                       <div class="form-group">
-                      <input name="pump_flow" type="number" min="0" step="0.1" class="form-control" required/>
+                      <input id="inputPumpFlow" name="pump_flow" type="number" min="0" step="0.1" class="form-control" required/>
                       </div>        
                     </div>          
                       
                     <div class="col-sm-4 col-xs-12">
                      <h5>Watering Hour</h5>
                       <div class="form-group">
-                      <input name="watering_hour" type="time" value="" class="form-control" required/>
+                      <input id="inputWateringHour" name="watering_hour" type="time" value="" class="form-control" required/>
                       </div>        
                     </div>      
                     
                     <div class="col-sm-4 col-xs-12">
                      <h5>Amount of water</h5>
                       <div class="form-group">
-                      <input name="water" type="number" min="0" step="0.1" class="form-control" required/>
+                      <input id="inputWaterAmount" name="water" type="number" min="0" step="0.1" class="form-control" required/>
                       </div>        
                     </div>    
                   </div><!-- /.box-body -->
@@ -335,14 +367,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <div class="col-sm-3 col-xs-12">
                        <h5>Temperature</h5>
                         <div class="form-group">
-                        <input name="temperature" type="number" min="0" max="50" step="0.1" class="form-control" required/>
+                        <input id="inputTemperature" name="temperature" type="number" min="0" max="50" step="0.1" class="form-control" required/>
                         </div>        
                       </div>      
                               
                       <div class="col-sm-3 col-xs-12">
                        <h5>Humidity</h5>
                         <div class="form-group">
-                        <input name="humidity" type="number" min="0" max="100" step="0.1" class="form-control" required/>
+                        <input id="inputHumidity" name="humidity" type="number" min="0" max="100" step="0.1" class="form-control" required/>
                         </div>        
                       </div>          
 
@@ -350,13 +382,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 </div><!-- /.box -->
 
-            </div>            
+            </div> 
+            <div id="alert" class="col-md-4 col-md-offset-4 col-xs-12"></div>
+           
             
         </div><!--/.row-->
 
          <div class="col-xs-12"> 
           <div class="pull-right">
-          <button type="submit" class="btn btn-success btn-lg">Save</button> <button type="cancel" class="btn bg-gray btn-lg">cancel</button>
+          <button id="saveButton" type="submit" class="btn btn-success btn-lg">Save</button> <a href="profiles.php"><button type="cancel" class="btn bg-gray btn-lg">cancel</button></a>
           </div>
          </div> 
 
@@ -416,6 +450,89 @@ scratch. This page gets rid of all links and provides the needed markup only.
           checkboxClass: 'icheckbox_flat-green',
           radioClass: 'iradio_flat-green'
         });
+
+        $("#saveButton").click(function(){
+          var name = $('#inputName').val();
+          var description = $('#inputDescription').val();
+          var sunrise = $('#inputSunrise').val();
+          var sunset = $('#inputSunset').val();
+          var workingTime = $('#inputWorkingTime').val();
+          var interval = $('#inputInterval').val();
+          var monday = $('#inputMonday').is(':checked');
+          var tuesday = $('#inputTuesday').is(':checked');
+          var thursday = $('#inputThursday').is(':checked');
+          var wednesday = $('#inputWednesday').is(':checked');
+          var friday = $('#inputFriday').is(':checked');
+          var saturday = $('#inputSaturday').is(':checked');
+          var sunday = $('#inputSunday').is(':checked');
+          var tankCapacity = $('#inputTankCapacity').val();
+          var pumpFlow = $('#inputPumpFlow').val();
+          var wateringHour = $('#inputWateringHour').val();
+          var waterAmount = $('#inputWaterAmount').val();
+          var temperature = $('#inputTemperature').val();
+          var humidity = $('#inputHumidity').val();
+
+          //var data = "name=" + name + "&description=" + description + "&sunrise=" + sunrise + "&sunset=" + sunset + "&interval=" + interval + "&working_time=" + workingTime + "&tank_capacity=" + tankCapacity + "&pump_flow=" + pumpFlow + "&watering_hour=" + wateringHour + "&water_amount=" + waterAmount + "&temperature=" + temperature + "&humidity=" + humidity + "&monday=" + monday + "&tuesday=" + tuesday +"&wednesday=" + wednesday + "&thursday=" + thursday + "&friday=" + friday + "&saturday=" + saturday + "&sunday=" + sunday;
+<?php
+if(!empty($_GET["id"])){
+  echo('var data = "name=" + name + "&description=" + description + "&sunrise=" + sunrise + "&sunset=" + sunset + "&interval=" + interval + "&working_time=" + workingTime + "&tank_capacity=" + tankCapacity + "&pump_flow=" + pumpFlow + "&watering_hour=" + wateringHour + "&water_amount=" + waterAmount + "&temperature=" + temperature + "&humidity=" + humidity + "&monday=" + monday + "&tuesday=" + tuesday +"&wednesday=" + wednesday + "&thursday=" + thursday + "&friday=" + friday + "&saturday=" + saturday + "&sunday=" + sunday + "&update=true&id=' . $_GET["id"] . '";');
+}
+else{
+  echo('var data = "name=" + name + "&description=" + description + "&sunrise=" + sunrise + "&sunset=" + sunset + "&interval=" + interval + "&working_time=" + workingTime + "&tank_capacity=" + tankCapacity + "&pump_flow=" + pumpFlow + "&watering_hour=" + wateringHour + "&water_amount=" + waterAmount + "&temperature=" + temperature + "&humidity=" + humidity + "&monday=" + monday + "&tuesday=" + tuesday +"&wednesday=" + wednesday + "&thursday=" + thursday + "&friday=" + friday + "&saturday=" + saturday + "&sunday=" + sunday;');
+}
+?>
+
+          $.ajax({
+            url : 'api/addProfile.php',
+            type : 'POST',
+            data : "" + data,
+            dataType : 'html',
+            success : function(result, status){
+              alert(result);
+              $("#apikeycontain").html(result);
+              if(result ==  "1"){
+                //alert("Your account has been added with success !"); //Need un truc plus propre, armand halp
+                var newAlert = document.createElement('div');
+                  newAlert.innerHTML = '<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Congratulations !</h4>Your profile has been added with success !</div>'
+                document.getElementById('alert').appendChild(newAlert);
+                //setTimeout(function(){window.location.href = "profiles.php";},3000);;
+              }
+              else if(result == "2"){
+                //alert("Your account has been updated with success !"); //Need un truc plus propre, armand halp
+                var newAlert = document.createElement('div');
+                  newAlert.innerHTML = '<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Congratulations !</h4>Your profile has been updated with success !</div>'
+                document.getElementById('alert').appendChild(newAlert);
+                setTimeout(function(){window.location.href = "profiles.php";},3000);;
+              }
+              else if(result == "false"){
+                //alert("An error occured."); //Need un truc plus propre, armand halp
+                var newAlert = document.createElement('div');
+                  newAlert.innerHTML = '<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert !</h4>An error occurred.</div>'
+                document.getElementById('alert').appendChild(newAlert);
+                //setTimeout(function(){window.location.href = "profiles.php";},3000);;
+              }
+              else if(result == "incomplete"){
+                //alert("An error occured."); //Need un truc plus propre, armand halp
+                var newAlert = document.createElement('div');
+                  newAlert.innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Incomplete form</h4>The informations you entered are incomplete.</div>'
+                document.getElementById('alert').appendChild(newAlert);
+              }
+              else if(result == "403"){
+                alert("You must be connected to do this."); //Need un truc plus propre, armand halp
+                window.location.href = "index.php";
+              }
+
+            },
+
+            error : function(result, statut, error){
+              alert("An error occured."); //Need un truc plus propre, armand halp
+            }
+
+          });
+   
+        });
+
+
     </script>
   </body>
 </html>

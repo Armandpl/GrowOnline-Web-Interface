@@ -1,8 +1,8 @@
 <?php
 session_start();
 if(empty($_SESSION["login"])){
-	header("Location: login.html");
+	header("Location: login.php");
 	exit();
 }
-header("Location: dashboard.html");
+header("Location: dashboard.php");
 ?>
