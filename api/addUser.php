@@ -12,7 +12,7 @@ if(empty($_SESSION["login"]) || empty($_SESSION["admin"])){
 }
 
 if(empty($_POST["login"]) || empty($_POST["pass"]) || empty($_POST["email"]) || empty($_POST["mobile"])){
-	echo("false");
+	echo("incomplete");
 	exit();
 }
 

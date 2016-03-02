@@ -71,13 +71,16 @@
         });
       });
 
-      var newAlert = document.createElement('div');
-      newAlert.innerHTML = '    <div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4>Danger alert preview. This alert is dismissable. A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.</div>';      
+            
 
       if(window.location.search.replace("?", "") == "logins"){
+        var newAlert = document.createElement('div');
+      newAlert.innerHTML = '    <div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Wrong login information.</h4>You have entered a bad username or a bad password.</div>'
         document.getElementById('alert').appendChild(newAlert);
       }
       else if(window.location.search.replace("?", "") == "false"){
+        var newAlert = document.createElement('div');
+      newAlert.innerHTML = '    <div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert !</h4>An error occurred.</div>'
         document.getElementById('alert').appendChild(newAlert);
       }
     </script>

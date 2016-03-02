@@ -1,3 +1,11 @@
+<?php
+include("api/config.php");
+session_start();
+if(empty($_SESSION["login"])){
+  header("location: index.php");
+  exit;
+}
+?>
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -23,8 +31,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-
-    <link rel="stylesheet" href="plugins/iCheck/all.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -63,7 +69,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <header class="main-header">
 
         <!-- Logo -->
-        <a href="dashboard.html" class="logo">
+        <a href="dashboard.php" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>G</b>O</span>
           <!-- logo for regular state and mobile devices -->
@@ -85,48 +91,71 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Menu toggle button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-bell-o"></i>
-                  <span class="label label-info">10</span>
+                  <!--<span class="label label-info">10</span>-->
                 </a>
                 <ul class="dropdown-menu">
-                  <li class="header">You have 10 notifications</li>
+                  <li class="header">No notifications</li>
                   <li>
                     <!-- Inner Menu: contains the notifications -->
                     <ul class="menu">
-                      <li><!-- start notification -->
+                      <!--<li>
                         <a href="#">
                           <i class="fa fa-users text-aqua"></i> 5 new members joined today
                         </a>
-                      </li><!-- end notification -->
+                      </li>--><!-- end notification -->
                     </ul>
                   </li>
                   <li class="footer"><a href="#">View all</a></li>
                 </ul>
               </li>              
               <!-- User Account: style can be found in dropdown.less -->
+
+<?php
+try{
+  $bdd = new PDO("mysql:host=" . $configHostBdd . ";dbname=" . $configNameBdd .";charset=utf8", $configUserBdd, $configPassBdd);
+}
+catch (Exception $e){
+  die($e->getMessage());
+}
+
+$request = $bdd->prepare('SELECT * FROM users WHERE id = :id');
+$request ->execute(array(
+    'id' => $_SESSION["id"]
+    ));
+
+$data = $request->fetch();
+
+if(empty($data["avatar"])) $avatar = "dist/img/user2-160x160.jpg";
+else $avatar = $data["avatar"];
+
+if($data["admin"] == 1) $status = "Admin";
+else $status = "User";
+?>
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                  <span class="hidden-xs">Armand</span>
+                  <img src="<?php echo($avatar) ?>" class="user-image" alt="User Image">
+                  <span class="hidden-xs"><?php echo($data["login"])?></span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    <img src="<?php echo($avatar) ?>" class="img-circle" alt="User Image">
                     <p>
-                      Armand
-                      <small>Admin</small>
+                      <?php echo($data["login"])?>
+                      <small><?php echo($status) ?></small>
                     </p>
                   </li>
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                    <a href="editUserProfile.html" class="btn btn-default btn-flat">Edit</a>
+                    <a href="editUserProfile.php" class="btn btn-default btn-flat">Edit</a>
                     </div>
                     <div class="pull-right">
                       <a href="api/logout.php" class="btn btn-default btn-flat">Sign out</a>
                     </div>
                   </li>
                 </ul>
+
               </li>
               
             </ul>
@@ -143,9 +172,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <ul class="sidebar-menu">
             <!--<li class="header">HEADER</li>-->
             <!-- Optionally, you can add icons to the links -->
-            <li><a href="dashboard.html"><i class="fa fa-tv"></i> <span>Dashboard</span></a></li>
-            <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Profiles</span></a></li>
-            <li><a href="settings.html"><i class="fa fa-gear"></i> <span>Settings</span></a></li>
+            <li><a href="dashboard.php"><i class="fa fa-tv"></i> <span>Dashboard</span></a></li>
+            <li><a href="profiles.php"><i class="fa fa-link"></i> <span>Profiles</span></a></li>
+            <li class="active"><a href="#"><i class="fa fa-gear"></i> <span>Settings</span></a></li>
           </ul><!-- /.sidebar-menu -->
         </section>
         <!-- /.sidebar -->
@@ -163,67 +192,78 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         <div class="row">
 
-          <div class="col-xs-12">
-              <div class="box">
-                <div class="box-header">
-                  <h3 class="box-title">Profiles</h3>
-                  <div class="box-tools">
-                    <div class="input-group" style="width: 150px;">
-                      <input type="text" name="table_search" class="form-control input-sm pull-right" placeholder="Search">
-                      <div class="input-group-btn">
-                        <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
-                      </div>
-                    </div>
-                  </div>
+            <div class="col-xs-12">   
+
+              <div class="box box-primary">
+
+                <div class="box-header with-border">              
+                  <h3 class="box-title">Users</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body table-responsive no-padding">
-                  <table class="table table-hover">
-                    <tbody><tr>
-                      <th>Selected</th>
-                      <th>Name</th>
-                      <th class="hidden-xs">Date</th>
-                      <th class="hidden-xs">Description</th>
-                      <th>Actions</th>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox" class="flat-red" ></td>
-                      <td>Floraison</td>
-                      <td class="hidden-xs">11-7-2014</td>
-                      <td class="hidden-xs">Profil pour la floraison de la menthe</td>
-                      <td><a href="edit.html"><button class="btn btn-success">Edit</button></a> <button class="btn btn-danger">Delete</button></td>
-                    </tr>
-                    <tr>
-                      <td><input checked="checked" type="checkbox" class="flat-red" ></td>
-                      <td>Croissance</td>
-                      <td class="hidden-xs">11-8-2015</td>
-                      <td class="hidden-xs">Profil pour la croissance de la menthe</td>
-                      <td><a href="edit.html"><button class="btn btn-success">Edit</button></a> <button class="btn btn-danger">Delete</button></td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox" class="flat-red" ></td>
-                      <td>Piments</td>
-                      <td class="hidden-xs">11-7-2016</td>
-                      <td class="hidden-xs">Profil pour les piments</td>
-                      <td><a href="edit.html"><button class="btn btn-success">Edit</button></a> <button class="btn btn-danger">Delete</button></td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox" class="flat-red" ></td>
-                      <td>Test</td>
-                      <td class="hidden-xs">11-7-2014</td>
-                      <td class="hidden-xs">Profil de test</td>
-                      <td><a href="edit.html"><button class="btn btn-success">Edit</button></a> <button class="btn btn-danger">Delete</button></td>
-                    </tr>
-                  </tbody></table>
-                  <div class="pull-left">
-                  <a href="edit.html" class="btn btn-app">
+
+                <div class="box-body">
+
+<?php
+
+$request = $bdd->query('SELECT * FROM `users`');
+
+while($data=$request->fetch()){
+  if(empty($data["avatar"])) $avatar = "dist/img/user2-160x160.jpg";
+  else $avatar = $data["avatar"];
+?>
+
+<div class="text-center" style="display:inline-block;">
+  <img class="profile-user-img img-responsive img-circle" src="<?php echo($avatar); ?>" alt="User profile picture">
+  <span><?php echo($data["login"]) ?></span>
+</div>
+
+<?php
+}
+$request->closeCursor();
+
+?>
+
+                  <a href="addUser.php" class="btn btn-app">
                     <i class="ion ion-plus"></i> Add
                   </a>
-                  </div>
-                </div><!-- /.box-body -->
-              </div><!-- /.box -->
+
+                </div>
+
+              </div>
+
             </div>
 
-        </div><!--/.row-->
+            <div class="col-xs-12">   
+                       
+              <div class="box box-primary">
+
+                <div class="box-header with-border">              
+                  <h3 class="box-title">Wifi Config</h3>
+                </div><!-- /.box-header -->
+
+                <div class="box-body">
+                  <div class="col-xs-12">              
+                    <div class="form-group">
+                      <label>Security Type</label>
+                      <select class="form-control">
+                        <option>None</option>
+                        <option>Wep</option>
+                        <option>WPA/PSK</option>
+                      </select>
+                      <label>SSID</label>
+                      <input placeholder="SSID" type="text" min="0" class="form-control" required/>
+                      <label>Password</label>
+                      <input placeholder="Password" type="text" min="0" class="form-control" required/>
+                      <div class="pull-right" style="margin-top:10px;">
+                       <button class="btn btn-primary">Save</button>
+                      </div>      
+                    </div>
+                </div>
+
+              </div>
+
+            </div>
+          
+        </div> <!--/.row-->
         </section><!-- /.content -->
 
       </div><!-- /.content-wrapper -->
@@ -257,27 +297,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <!-- SlimScroll 1.3.0 -->
     <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
-    <!-- ChartJS 1.0.1 -->    
-    <script src="plugins/chartjs/Chart.min.js"></script>  
-
-    <script src="plugins/iCheck/icheck.min.js"></script>  
-
-    <script>
-            //iCheck for checkbox and radio inputs
-        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-          checkboxClass: 'icheckbox_minimal-blue',
-          radioClass: 'iradio_minimal-blue'
-        });
-        //Red color scheme for iCheck
-        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
-          checkboxClass: 'icheckbox_minimal-red',
-          radioClass: 'iradio_minimal-red'
-        });
-        //Flat red color scheme for iCheck
-        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-          checkboxClass: 'icheckbox_flat-green',
-          radioClass: 'iradio_flat-green'
-        });
-    </script>
+    <!-- ChartJS 1.0.1 -->
+    <script src="plugins/chartjs/Chart.min.js"></script>     
   </body>
 </html>

@@ -1,3 +1,11 @@
+<?php
+include("api/config.php");
+session_start();
+if(empty($_SESSION["login"])){
+  header("location: index.php");
+  exit;
+}
+?>
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -61,7 +69,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <header class="main-header">
 
         <!-- Logo -->
-        <a href="dashboard.html" class="logo">
+        <a href="dashboard.php" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>G</b>O</span>
           <!-- logo for regular state and mobile devices -->
@@ -83,48 +91,71 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Menu toggle button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-bell-o"></i>
-                  <span class="label label-info">10</span>
+                  <!--<span class="label label-info">10</span>-->
                 </a>
                 <ul class="dropdown-menu">
-                  <li class="header">You have 10 notifications</li>
+                  <li class="header">No notifications</li>
                   <li>
                     <!-- Inner Menu: contains the notifications -->
                     <ul class="menu">
-                      <li><!-- start notification -->
+                      <!--<li>
                         <a href="#">
                           <i class="fa fa-users text-aqua"></i> 5 new members joined today
                         </a>
-                      </li><!-- end notification -->
+                      </li>--><!-- end notification -->
                     </ul>
                   </li>
                   <li class="footer"><a href="#">View all</a></li>
                 </ul>
               </li>              
               <!-- User Account: style can be found in dropdown.less -->
+
+<?php
+try{
+  $bdd = new PDO("mysql:host=" . $configHostBdd . ";dbname=" . $configNameBdd .";charset=utf8", $configUserBdd, $configPassBdd);
+}
+catch (Exception $e){
+  die($e->getMessage());
+}
+
+$request = $bdd->prepare('SELECT * FROM users WHERE id = :id');
+$request ->execute(array(
+    'id' => $_SESSION["id"]
+    ));
+
+$data = $request->fetch();
+
+if(empty($data["avatar"])) $avatar = "dist/img/user2-160x160.jpg";
+else $avatar = $data["avatar"];
+
+if($data["admin"] == 1) $status = "Admin";
+else $status = "User";
+?>
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                  <span class="hidden-xs">Armand</span>
+                  <img src="<?php echo($avatar) ?>" class="user-image" alt="User Image">
+                  <span class="hidden-xs"><?php echo($data["login"])?></span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    <img src="<?php echo($avatar) ?>" class="img-circle" alt="User Image">
                     <p>
-                      Armand
-                      <small>Admin</small>
+                      <?php echo($data["login"])?>
+                      <small><?php echo($status) ?></small>
                     </p>
                   </li>
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                    <a href="editUserProfile.html" class="btn btn-default btn-flat">Edit</a>
+                    <a href="editUserProfile.php" class="btn btn-default btn-flat">Edit</a>
                     </div>
                     <div class="pull-right">
                       <a href="api/logout.php" class="btn btn-default btn-flat">Sign out</a>
                     </div>
                   </li>
                 </ul>
+
               </li>
               
             </ul>
@@ -141,9 +172,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <ul class="sidebar-menu">
             <!--<li class="header">HEADER</li>-->
             <!-- Optionally, you can add icons to the links -->
-            <li><a href="dashboard.html"><i class="fa fa-tv"></i> <span>Dashboard</span></a></li>
-            <li><a href="profiles.html"><i class="fa fa-link"></i> <span>Profiles</span></a></li>
-            <li class="active"><a href="#"><i class="fa fa-gear"></i> <span>Settings</span></a></li>
+            <li><a href="dashboard.php"><i class="fa fa-tv"></i> <span>Dashboard</span></a></li>
+            <li><a href="profiles.php"><i class="fa fa-link"></i> <span>Profiles</span></a></li>
+            <li><a href="settings.php"><i class="fa fa-gear"></i> <span>Settings</span></a></li>
           </ul><!-- /.sidebar-menu -->
         </section>
         <!-- /.sidebar -->
@@ -153,7 +184,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-         
+         <h1>
+            User Profile
+          </h1>
         </section>
 
         <!-- Main content -->
@@ -161,81 +194,55 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         <div class="row">
 
-            <div class="col-xs-12">   
+          <div class="col-xs-12 col-md-6 col-md-offset-3">
 
+              <!-- Profile Image -->
               <div class="box box-primary">
+                <div class="box-body box-profile">
+                  <img class="profile-user-img img-responsive img-circle" src="<?php echo($_SESSION["avatar"]); ?>" alt="User profile picture">
+                  <h3 class="profile-username text-center">
+                    <span contenteditable="true"><?php echo($_SESSION["login"]); ?></span>
+                    <span class="fa fa-edit"></span>
+                  </h3>
+                  <p class="text-muted text-center"><?php echo($_SESSION["status"]) ?></p>    
 
-                <div class="box-header with-border">              
-                  <h3 class="box-title">Users</h3>
-                </div><!-- /.box-header -->
 
-                <div class="box-body">
-
-                  <div class="text-center" style="display:inline-block;">
-                    <img class="profile-user-img img-responsive img-circle" src="dist/img/user4-128x128.jpg" alt="User profile picture">
-                    <span>Armand</span>
-                  </div>
-
-                  <div class="text-center" style="display:inline-block;">
-                    <img class="profile-user-img img-responsive img-circle" src="http://puu.sh/noada/78b77baf54.png" alt="User profile picture">
-                    <span>Lucas</span>
-                  </div>
-
-                  <div class="text-center" style="display:inline-block;">
-                    <img class="profile-user-img img-responsive img-circle" src="dist/img/user4-128x128.jpg" alt="User profile picture">
-                    <span>Armand</span>
-                  </div>
-
-                  <div class="text-center" style="display:inline-block;">
-                    <img class="profile-user-img img-responsive img-circle" src="dist/img/user4-128x128.jpg" alt="User profile picture">
-                    <span>Armand</span>
-                  </div>
-
-                  <div class="text-center" style="display:inline-block;">
-                    <img class="profile-user-img img-responsive img-circle" src="dist/img/user2-160x160.jpg" alt="User profile picture">
-                    <span>Armand</span>
-                  </div>
-
-                  <a href="addUser.html" class="btn btn-app">
-                    <i class="ion ion-plus"></i> Add
-                  </a>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="col-xs-12">   
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
                        
-              <div class="box box-primary">
+            <div class="box box-primary">
 
-                <div class="box-header with-border">              
-                  <h3 class="box-title">Wifi Config</h3>
-                </div><!-- /.box-header -->
+              <div class="box-header with-border">              
+                <h3 class="box-title">Alerts/Notifications</h3>
+              </div><!-- /.box-header -->
 
-                <div class="box-body">
-                  <div class="col-xs-12">              
-                    <div class="form-group">
-                      <label>Security Type</label>
-                      <select class="form-control">
-                        <option>None</option>
-                        <option>Wep</option>
-                        <option>WPA/PSK</option>
-                      </select>
-                      <label>SSID</label>
-                      <input placeholder="SSID" type="text" min="0" class="form-control" required/>
-                      <label>Password</label>
-                      <input placeholder="Password" type="text" min="0" class="form-control" required/>
-                      <div class="pull-right" style="margin-top:10px;">
-                       <button class="btn btn-primary">Save</button>
-                      </div>      
-                    </div>
-                </div>
+              <div class="box-body">
+              </div>
+
+            </div> 
+                       
+            <div class="box box-primary">
+
+              <div class="box-header with-border">              
+                <h3 class="box-title">SMS API</h3>                  
+              </div><!-- /.box-header -->
+
+              <div class="box-body">
+              <div class="col-xs-12">
+                <div class="form-group">
+                <label>Copy/Paste your SMS API link down below to receive SMS notifications.</label>                
+                <input placeholder="API link" type="text" min="0" class="form-control" required/>
+                <div class="pull-right" style="margin-top:10px;">
+                 <button class="btn btn-primary">Save</button>
+                </div>  
+                </div>    
+              </div>                        
 
               </div>
 
-            </div>
+            </div> 
+
+            </div><!-- /.col -->
           
         </div> <!--/.row-->
         </section><!-- /.content -->
