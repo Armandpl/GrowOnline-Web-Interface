@@ -189,7 +189,7 @@ else $status = "User";
 
         <div class="row">
           
-            <div class="col-md-8 col-xs-12">
+            <div class="col-md-6 col-xs-12">
               <!-- interactive chart -->
               <div class="box box-primary">
                 <div class="box-header with-border">
@@ -197,13 +197,27 @@ else $status = "User";
                   <h3 class="box-title">Temperature</h3>
                 </div>
                 <div class="box-body">
-                  <div id="interactive" style="height: 300px;"></div>
+                  <div id="temperature_chart" style="height: 300px;"></div>
                 </div><!-- /.box-body-->
               </div><!-- /.box -->
 
             </div><!-- /.col -->
 
-          <div class="col-md-4 col-xs-12">
+            <div class="col-md-6 col-xs-12">
+              <!-- interactive chart -->
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <i class="fa fa-bar-chart-o"></i>
+                  <h3 class="box-title">Humidity</h3>
+                </div>
+                <div class="box-body">
+                  <div id="humidity_chart" style="height: 300px;"></div>
+                </div><!-- /.box-body-->
+              </div><!-- /.box -->
+
+            </div><!-- /.col -->
+
+          <div class="col-md-6 col-xs-12">
 
                 <!-- Info Boxes Style 2 -->
                 <div class="info-box bg-yellow">
@@ -232,7 +246,10 @@ else $status = "User";
                   </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
 
-                <div class="info-box bg-maroon">
+          </div>
+
+          <div class="col-md-6 col-xs-12">
+                  <div class="info-box bg-maroon">
                   <span class="info-box-icon"><i class="ion ion-load-b"></i></span>
                   <div class="info-box-content">
                     <span class="info-box-text">Fan</span>
@@ -255,7 +272,6 @@ else $status = "User";
                     <span class="info-box-number" id="uptime"></span>                    
                   </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
-
           </div>
 
         </div> <!--/.row-->
@@ -312,10 +328,10 @@ else $status = "User";
          */
         // We use an inline data source in the example, usually data would
         // be fetched from a server
-        var data = [], totalPoints = 100;
-        function getRandomData() {
+        var data_t = [], totalPoints = 100;
+        function getTemp() {
 
-          if (data.length > 0){data = data.slice(1);}            
+          if (data_t.length > 0){data_t = data_t.slice(1);}            
 
             var array;  
             var temp=0;  
@@ -336,19 +352,56 @@ else $status = "User";
               temp+=parseFloat(array[1]); 
               while (data.length < totalPoints) 
               {            
-                data.push(temp);
+                data_t.push(temp);
               }                  
 
               for (var i = 0; i < data.length; ++i) 
               {
-                res.push([i, data[i]]);
+                res.push([i, data_t[i]]);
               }   
 
             },error : function(result, statut, error){}});       
             return res;
         }
 
-        var interactive_plot = $.plot("#interactive", [getRandomData()], {
+        var data_h = [], totalPoints = 100;
+        function getHum() {
+
+          if (data_h.length > 0){data_h = data_h.slice(1);}            
+
+            var array;  
+            var temp=0;  
+            var res = [];               
+
+            $.ajax({
+            url : 'api/getStatus.php',
+            type : 'GET',
+            data : '',
+            dataType : 'html', 
+            async : false,           
+            success : function(result, status){
+              if(result == "403"){
+                alert("You must be connected.");
+                window.location.href = "index.php";
+              }
+              array = result.split(";");    
+              temp+=parseFloat(array[1]); 
+              while (data_h.length < totalPoints) 
+              {            
+                data_h.push(temp);
+              }                  
+
+              for (var i = 0; i < data_h.length; ++i) 
+              {
+                res.push([i, data_h[i]]);
+              }   
+
+            },error : function(result, statut, error){}});       
+            return res;
+        }
+
+
+        var temp_plot = $.plot("#temperature_chart", [getHum()], {
           grid: {
             borderColor: "#f3f3f3",
             borderWidth: 1,
@@ -372,14 +425,40 @@ else $status = "User";
           }
         });
 
+        var hum_plot = $.plot("#humidity_chart", [getHum()], {
+          grid: {
+            borderColor: "#f3f3f3",
+            borderWidth: 1,
+            tickColor: "#f3f3f3"
+          },
+          series: {
+            shadowSize: 0, // Drawing is faster without shadows
+            color: "#3c8dbc"
+          },
+          lines: {
+            fill: true, //Converts the line chart to area chart
+            color: "#3c8dbc"
+          },
+          yaxis: {
+            min: 0,
+            max: 100,
+            show: true
+          },
+          xaxis: {
+            show: false
+          }
+        });
+
         var updateInterval = 5000; //Fetch data ever x milliseconds
         var realtime = "on"; //If == to on then fetch data every x seconds. else stop fetching
         function update() {
 
-          interactive_plot.setData([getRandomData()]);
+          temp_plot.setData([getTemp()]);
+          hum_plot.setData([getHum()]);
 
           // Since the axes don't change, we don't need to call plot.setupGrid()
-          interactive_plot.draw();
+          temp_plot.draw();
+          hum_plot.draw();
           if (realtime === "on")
             setTimeout(update, updateInterval);
         }
