@@ -221,13 +221,7 @@ else $status = "User";
 
           <div class="col-md-6 col-xs-12">
 
-                <div class="info-box bg-orange">
-                  <a onclick="trigger('heater');" class="info-box-icon" style="cursor: pointer;"><i class="glyphicon glyphicon-flash" style="color: white;"></i></a>                  
-                  <div class="info-box-content">
-                    <span class="info-box-text">Heater</span>
-                    <span class="info-box-number" id="heater"></span>                    
-                  </div><!-- /.info-box-content -->
-                </div><!-- /.info-box -->
+                
 
                 <!-- Info Boxes Style 2 -->
                 <div class="info-box bg-yellow">
@@ -262,14 +256,24 @@ else $status = "User";
                   </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
 
-          </div>
-
-          <div class="col-md-6 col-xs-12">
-                  <div class="info-box bg-maroon">
+                <div class="info-box bg-maroon">
                   <a onclick="trigger('fan');" class="info-box-icon" style="cursor: pointer;"><i class="ion ion-load-b" style="color: white;"></i></a>                                    
                   <div class="info-box-content">
                     <span class="info-box-text">Fan</span>
                     <span class="info-box-number" id="fan"></span>                    
+                  </div><!-- /.info-box-content -->
+                </div><!-- /.info-box -->
+
+          </div>
+
+          <div class="col-md-6 col-xs-12">
+                  
+
+                <div class="info-box bg-orange">
+                  <a onclick="trigger('heater');" class="info-box-icon" style="cursor: pointer;"><i class="glyphicon glyphicon-flash" style="color: white;"></i></a>                  
+                  <div class="info-box-content">
+                    <span class="info-box-text">Heater</span>
+                    <span class="info-box-number" id="heater"></span>                    
                   </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
 
