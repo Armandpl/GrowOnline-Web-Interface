@@ -270,7 +270,7 @@ else $status = "User";
                   
 
                 <div class="info-box bg-orange">
-                  <a onclick="trigger('heater');" class="info-box-icon" style="cursor: pointer;"><i class="glyphicon glyphicon-flash" style="color: white;"></i></a>                  
+                  <a onclick="trigger('heater');" class="info-box-icon" style="cursor: pointer;"><i class="glyphicon glyphicon-fire" style="color: white;"></i></a>                  
                   <div class="info-box-content">
                     <span class="info-box-text">Heater</span>
                     <span class="info-box-number" id="heater"></span>                    
