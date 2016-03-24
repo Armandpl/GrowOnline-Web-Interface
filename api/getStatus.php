@@ -42,24 +42,24 @@ $temperature = $data["Temp"];
 $result->closeCursor();
 
 
-if(exec("gpio read 5")=="1"){
+if(exec("gpio read ".$lampPin)=="1"){
 	$lamp = "OFF";
 }
-else if(exec("gpio read 5")=="0"){
+else if(exec("gpio read ".$lampPin)=="0"){
 	$lamp = "ON";
 }
 
-if(exec("gpio read 6")=="1"){
+if(exec("gpio read ".$fanPin)=="1"){
 	$fan = "OFF";
 }
-else if(exec("gpio read 6")=="0"){
+else if(exec("gpio read ".$fanPin)=="0"){
 	$fan = "ON";
 }
 
-if(exec("gpio read 13")=="1"){
+if(exec("gpio read ".$pumpPin)=="1"){
 	$pump = "OFF";
 }
-else if(exec("gpio read 13")=="0"){
+else if(exec("gpio read ".$pumpPin)=="0"){
 	$pump = "ON";
 }
 

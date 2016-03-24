@@ -32,6 +32,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
 
+    <link rel="stylesheet" href="plugins/select2/select2.min.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -191,7 +193,7 @@ else $status = "User";
           
             <div class="col-md-6 col-xs-12">
               <!-- interactive chart -->
-              <div class="box box-primary">
+              <div class="box box-danger">
                 <div class="box-header with-border">
                   <i class="fa fa-bar-chart-o"></i>
                   <h3 class="box-title">Temperature</h3>
@@ -221,11 +223,17 @@ else $status = "User";
 
                 <!-- Info Boxes Style 2 -->
                 <div class="info-box bg-yellow">
-                  <span class="info-box-icon"><i class="fa fa-link"></i></span>
+                  <a onclick="updateSelect();" class="info-box-icon" style="cursor: pointer;"><i class="fa fa-link" style="color: white;"></i></a>
                   <div class="info-box-content">
                     <span class="info-box-text">Current Profile</span>
-                    <span class="info-box-number" id="currentProfile">Floraison</span>
-                    <a href="edit.php"><button class="btn btn-default">Edit</button></a>
+                    <div class="form-group">
+                    <select onchange="onSelectChange();" id="select" class="form-control select2" style="width: 75%;">
+                      <?php include("api/getProfilesList.php");?>                     
+                    </select>
+                    <a href="edit.php" style="display: inline-block;"><button class="btn btn-default">Edit</button></a>
+                  </div><!-- /.form-group -->
+                    <!--<span class="info-box-number" id="currentProfile"></span>-->
+                    
                   </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
 
@@ -239,7 +247,7 @@ else $status = "User";
                 </div><!-- /.info-box -->
 
                 <div class="info-box bg-red">
-                  <span class="info-box-icon"><i class="ion ion-android-sunny"></i></span>
+                  <a onclick="trigger('lamp');" class="info-box-icon" style="cursor: pointer;"><i class="ion ion-android-sunny" style="color: white;"></i></a>                  
                   <div class="info-box-content">
                     <span class="info-box-text">Lamp</span>
                     <span class="info-box-number" id="lamp"></span>                    
@@ -250,15 +258,15 @@ else $status = "User";
 
           <div class="col-md-6 col-xs-12">
                   <div class="info-box bg-maroon">
-                  <span class="info-box-icon"><i class="ion ion-load-b"></i></span>
+                  <a onclick="trigger('fan');" class="info-box-icon" style="cursor: pointer;"><i class="ion ion-load-b" style="color: white;"></i></a>                                    
                   <div class="info-box-content">
                     <span class="info-box-text">Fan</span>
                     <span class="info-box-number" id="fan"></span>                    
                   </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
 
-                <div class="info-box bg-aqua">
-                  <span class="info-box-icon"><i class="ion ion-waterdrop"></i></span>
+                <div class="info-box bg-aqua">                  
+                  <a onclick="trigger('waterPump');" class="info-box-icon" style="cursor: pointer;"><i class="ion ion-waterdrop" style="color: white;"></i></a>                                    
                   <div class="info-box-content">
                     <span class="info-box-text">Water Pump</span>
                     <span class="info-box-number" id="waterPump"></span>                    
@@ -318,16 +326,71 @@ else $status = "User";
     <script src="plugins/flot/jquery.flot.pie.min.js"></script>
     <!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
     <script src="plugins/flot/jquery.flot.categories.min.js"></script>
+
+    <script src="plugins/select2/select2.full.min.js"></script>
     
         <!-- Page script -->
     <script>
+      $(function () {$(".select2").select2(); });
+
+      function trigger(target)
+      {
+        $.post("api/trigger.php",{target: target},function( data ) 
+          {
+            if(target=="lamp"){$("#lamp").html(data);}
+            if(target=="fan"){$("#fan").html(data);}
+            if(target=="waterPump"){$("#waterPump").html(data);}
+          });
+      }
+
+      function onSelectChange()
+      {
+        select = $("#select").val();
+        $.post("api/setProfile.php",{select: select});
+      }
+
       $(function () {
         /*
          * Flot Interactive Chart
          * -----------------------
          */
-        // We use an inline data source in the example, usually data would
-        // be fetched from a server
+
+        var data_h = [];
+        function getHum() {
+
+          if (data_h.length > 0){data_h = data_h.slice(1);}            
+
+            var array;  
+            var hum=0;  
+            var res = [];               
+
+            $.ajax({
+            url : 'api/getStatus.php',
+            type : 'GET',
+            data : '',
+            dataType : 'html', 
+            async : false,           
+            success : function(result, status){
+              if(result == "403"){
+                alert("You must be connected.");
+                window.location.href = "index.php";
+              }
+              array = result.split(";");    
+              hum+=parseFloat(array[2]); 
+              while (data_h.length < totalPoints) 
+              {            
+                data_h.push(hum);
+              }                  
+
+              for (var i = 0; i < data_h.length; ++i) 
+              {
+                res.push([i, data_h[i]]);
+              }   
+
+            },error : function(result, statut, error){}});       
+            return res;
+        }
+
         var data_t = [], totalPoints = 100;
         function getTemp() {
 
@@ -350,12 +413,12 @@ else $status = "User";
               }
               array = result.split(";");    
               temp+=parseFloat(array[1]); 
-              while (data.length < totalPoints) 
+              while (data_t.length < totalPoints) 
               {            
                 data_t.push(temp);
               }                  
 
-              for (var i = 0; i < data.length; ++i) 
+              for (var i = 0; i < data_t.length; ++i) 
               {
                 res.push([i, data_t[i]]);
               }   
@@ -364,44 +427,7 @@ else $status = "User";
             return res;
         }
 
-        var data_h = [], totalPoints = 100;
-        function getHum() {
-
-          if (data_h.length > 0){data_h = data_h.slice(1);}            
-
-            var array;  
-            var temp=0;  
-            var res = [];               
-
-            $.ajax({
-            url : 'api/getStatus.php',
-            type : 'GET',
-            data : '',
-            dataType : 'html', 
-            async : false,           
-            success : function(result, status){
-              if(result == "403"){
-                alert("You must be connected.");
-                window.location.href = "index.php";
-              }
-              array = result.split(";");    
-              temp+=parseFloat(array[1]); 
-              while (data_h.length < totalPoints) 
-              {            
-                data_h.push(temp);
-              }                  
-
-              for (var i = 0; i < data_h.length; ++i) 
-              {
-                res.push([i, data_h[i]]);
-              }   
-
-            },error : function(result, statut, error){}});       
-            return res;
-        }
-
-
-        var temp_plot = $.plot("#temperature_chart", [getHum()], {
+        var temp_plot = $.plot("#temperature_chart", [getTemp()], {
           grid: {
             borderColor: "#f3f3f3",
             borderWidth: 1,
@@ -409,11 +435,11 @@ else $status = "User";
           },
           series: {
             shadowSize: 0, // Drawing is faster without shadows
-            color: "#3c8dbc"
+            color: "#DD4B39"
           },
           lines: {
             fill: true, //Converts the line chart to area chart
-            color: "#3c8dbc"
+            color: "#DD4B39"
           },
           yaxis: {
             min: 15,
@@ -456,7 +482,7 @@ else $status = "User";
           temp_plot.setData([getTemp()]);
           hum_plot.setData([getHum()]);
 
-          // Since the axes don't change, we don't need to call plot.setupGrid()
+           //Since the axes don't change, we don't need to call plot.setupGrid()
           temp_plot.draw();
           hum_plot.draw();
           if (realtime === "on")
@@ -494,8 +520,13 @@ else $status = "User";
                 + Math.round(series.percent) + "%</div>";
       }
 
+      function updateSelect()
+      {        
+        $('#select').load('api/getProfilesList.php').fadeIn("slow");
+        $(".select2").select2();
+      }
+
       function updateData(){
-        //alert("test");
         $.ajax({
             url : 'api/getStatus.php',
             type : 'GET',
@@ -533,7 +564,7 @@ else $status = "User";
           });
         setTimeout(updateData,2000);
       }
-      updateData();
+      updateData();//??
     </script>
 
   </body>

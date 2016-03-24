@@ -209,7 +209,7 @@ else $status = "User";
 
         <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="form-group">
-          <textarea class="form-control" id="inputDescription" rows="2" placeholder="Write a short description" maxlength="100" required></textarea>
+          <textarea class="form-control" id="inputDescription" rows="2" placeholder="Write a short description" maxlength="100"></textarea>
           </div>        
         </div>  
 
@@ -230,14 +230,14 @@ else $status = "User";
                       <div class="col-sm-3 col-xs-12">
                        <h5>Sunrise</h5>
                         <div class="form-group">
-                        <input id="inputSunrise" name="sunrise" type="time" value="" class="form-control" required/>
+                        <input id="inputSunrise" name="sunrise" type="time" value="00:00" class="form-control" required/>
                         </div>        
                       </div>      
                               
                       <div class="col-sm-3 col-xs-12">
                        <h5>Sunset</h5>
                         <div class="form-group">
-                        <input id="inputSunset" name="sunset" type="time" value="" class="form-control" required/>
+                        <input id="inputSunset" name="sunset" type="time" value="00:00" class="form-control" required/>
                         </div>        
                       </div>          
 
@@ -259,14 +259,14 @@ else $status = "User";
                       <div class="col-sm-3 col-xs-12">
                        <h5>Working Time</h5>
                         <div class="form-group">
-                        <input id="inputWorkingTime" name="working_time" type="time" value="" class="form-control" required/>
+                        <input id="inputWorkingTime" name="working_time" type="time" value="00:00" class="form-control" required/>
                         </div>        
                       </div>      
                               
                       <div class="col-sm-3 col-xs-12">
                        <h5>Interval</h5>
                         <div class="form-group">
-                        <input id="inputInterval" name="interval" type="time" value="" class="form-control" required/>
+                        <input id="inputInterval" name="interval" type="time" value="00:00" class="form-control" required/>
                         </div>        
                       </div>          
 
@@ -295,7 +295,7 @@ else $status = "User";
                               Monday
                             </label> 
                             <label style="display:block;">
-                              <input id="inputTuesday" type="checkbox" class="flat-red" >
+                              <input checked='checked' id="inputTuesday" type="checkbox" class="flat-red" >
                               Tuesday
                             </label> 
                             <label style="display:block;">
@@ -325,14 +325,14 @@ else $status = "User";
                     <div class="col-sm-4 col-xs-12">
                      <h5>Tank Capacity</h5> 
                       <div class="form-group">
-                      <input id="inputTankCapacity" name="tank_capacity" type="number" min="0" step="0.1" class="form-control" required/>
+                      <input id="inputTankCapacity" name="tank_capacity" type="number" min="0" step="0.1" class="form-control" value="0" required/>
                       </div>        
                     </div>      
                             
                     <div class="col-sm-4 col-xs-12">
                      <h5>Pump Flow</h5>
                       <div class="form-group">
-                      <input id="inputPumpFlow" name="pump_flow" type="number" min="0" step="0.1" class="form-control" required/>
+                      <input id="inputPumpFlow" name="pump_flow" type="number" min="0" step="0.1" value="105" class="form-control" required/>
                       </div>        
                     </div>          
                       
@@ -346,7 +346,7 @@ else $status = "User";
                     <div class="col-sm-4 col-xs-12">
                      <h5>Amount of water</h5>
                       <div class="form-group">
-                      <input id="inputWaterAmount" name="water" type="number" min="0" step="0.1" class="form-control" required/>
+                      <input id="inputWaterAmount" name="water" type="number" min="0" step="0.1" value="25" class="form-control" required/>
                       </div>        
                     </div>    
                   </div><!-- /.box-body -->
@@ -367,14 +367,14 @@ else $status = "User";
                       <div class="col-sm-3 col-xs-12">
                        <h5>Temperature</h5>
                         <div class="form-group">
-                        <input id="inputTemperature" name="temperature" type="number" min="0" max="50" step="0.1" class="form-control" required/>
+                        <input id="inputTemperature" name="temperature" type="number" min="0" max="50" step="0.1" class="form-control" value="25" required/>
                         </div>        
                       </div>      
                               
                       <div class="col-sm-3 col-xs-12">
                        <h5>Humidity</h5>
                         <div class="form-group">
-                        <input id="inputHumidity" name="humidity" type="number" min="0" max="100" step="0.1" class="form-control" required/>
+                        <input id="inputHumidity" name="humidity" type="number" min="0" max="100" step="0.1" class="form-control" value="50" required/>
                         </div>        
                       </div>          
 

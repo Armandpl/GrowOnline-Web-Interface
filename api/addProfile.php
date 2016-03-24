@@ -46,7 +46,7 @@ $updated = false;
 
 if(!empty($_POST["update"]) && !empty($_POST["id"])){
 	$updated=true;
-	$request = $bdd->prepare("UPDATE Profiles SET Description=:description, Sunrise=:sunrise, Sunset=:sunset, `Interval`=:interval, Working_Time=:working_time, Tank_Capacity=:tank_capacity, Pump_Flow=:pump_flow, Watering_Hour=:watering_hour, Water_Amount=:water_amount, Temperature=:temperature, Humidity=:humidity, Monday=:monday, Tuesday=:tuesday, Wednesday=:wednesday, Thursday=:thursday, Friday=:friday, Saturday=:saturday, Sunday=:sunday WHERE id=:id;");			
+	$request = $bdd->prepare("UPDATE profiles SET Description=:description, Sunrise=:sunrise, Sunset=:sunset, `Interval`=:interval, Working_Time=:working_time, Tank_Capacity=:tank_capacity, Pump_Flow=:pump_flow, Watering_Hour=:watering_hour, Water_Amount=:water_amount, Temperature=:temperature, Humidity=:humidity, Monday=:monday, Tuesday=:tuesday, Wednesday=:wednesday, Thursday=:thursday, Friday=:friday, Saturday=:saturday, Sunday=:sunday WHERE id=:id;");			
 	$request->execute(array(
 		"description" => $_POST["description"],
 		"sunrise" => $_POST["sunrise"],
@@ -73,7 +73,7 @@ if(!empty($_POST["update"]) && !empty($_POST["id"])){
 }
 
 if(!$updated){
-	$request = $bdd->prepare("INSERT INTO Profiles (Name, Description,Sunrise, Sunset, `Interval`, Working_Time, Tank_Capacity, Pump_Flow, Watering_Hour, Water_Amount, Temperature, Humidity, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday) VALUES (:name, :description, :sunrise, :sunset, :interval, :working_time, :tank_capacity, :pump_flow, :watering_hour, :water_amount, :temperature, :humidity, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday);");
+	$request = $bdd->prepare("INSERT INTO profiles (Name, Description,Sunrise, Sunset, `Interval`, Working_Time, Tank_Capacity, Pump_Flow, Watering_Hour, Water_Amount, Temperature, Humidity, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday) VALUES (:name, :description, :sunrise, :sunset, :interval, :working_time, :tank_capacity, :pump_flow, :watering_hour, :water_amount, :temperature, :humidity, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday);");
 	$request->execute(array(
 		"name" => $_POST["name"],
 		"description" => $_POST["description"],
