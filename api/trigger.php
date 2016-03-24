@@ -28,4 +28,9 @@ else if($target=="waterPump")
 	if(exec("gpio read ".$pumpPin)=="1"){exec("gpio write ".$pumpPin." 0");echo "ON";}
 	else{exec("gpio write ".$pumpPin." 1");echo "OFF";}
 }
+else if($target=="heater")
+{
+	if(exec("gpio read ".$heaterPin)=="1"){exec("gpio write ".$heaterPin." 0");echo "ON";}
+	else{exec("gpio write ".$heaterPin." 1");echo "OFF";}
+}
 ?>

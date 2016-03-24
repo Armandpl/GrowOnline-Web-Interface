@@ -221,6 +221,14 @@ else $status = "User";
 
           <div class="col-md-6 col-xs-12">
 
+                <div class="info-box bg-orange">
+                  <a onclick="trigger('heater');" class="info-box-icon" style="cursor: pointer;"><i class="glyphicon glyphicon-flash" style="color: white;"></i></a>                  
+                  <div class="info-box-content">
+                    <span class="info-box-text">Heater</span>
+                    <span class="info-box-number" id="heater"></span>                    
+                  </div><!-- /.info-box-content -->
+                </div><!-- /.info-box -->
+
                 <!-- Info Boxes Style 2 -->
                 <div class="info-box bg-yellow">
                   <a onclick="updateSelect();" class="info-box-icon" style="cursor: pointer;"><i class="fa fa-link" style="color: white;"></i></a>
@@ -340,6 +348,7 @@ else $status = "User";
             if(target=="lamp"){$("#lamp").html(data);}
             if(target=="fan"){$("#fan").html(data);}
             if(target=="waterPump"){$("#waterPump").html(data);}
+            if(target=="heater"){$("#heater").html(data);}
           });
       }
 
@@ -547,7 +556,8 @@ else $status = "User";
                 $("#lamp").html(array[3]);
                 $("#fan").html(array[4]);
                 $("#waterPump").html(array[5]);
-                $("#uptime").html(array[6]);
+                $("#heater").html(array[6]);
+                $("#uptime").html(array[7]);
               }
             },
 

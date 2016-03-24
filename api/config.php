@@ -1,8 +1,8 @@
 <?php
 $configHostBdd="localhost";
 $configNameBdd="growonline";
-$configUserBdd="Username";
-$configPassBdd="Password";
+$configUserBdd="root";
+$configPassBdd="root";
 $lampPin=5;
 $fanPin=4;
 $pumpPin=3;

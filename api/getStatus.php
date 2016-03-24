@@ -1,7 +1,7 @@
 <?php
 /*
 METHOD: GET
-RETURN: profileName;temperature;humidity;lamp;fan;pump;putime
+RETURN: profileName;temperature;humidity;lamp;fan;pump;heater;uptime
 */
 ini_set("display_errors",0);
 error_reporting(0);
@@ -24,6 +24,7 @@ $humidity = "N/A";
 $lamp = "N/A";
 $fan = "N/A";
 $pump = "N/A";
+$heater = "N/A";
 $uptime = "N/A";
 
 $result = $bdd->query('SELECT * FROM `profile`');
@@ -63,9 +64,16 @@ else if(exec("gpio read ".$pumpPin)=="0"){
 	$pump = "ON";
 }
 
+if(exec("gpio read ".$heaterPin)=="1"){
+	$heater = "OFF";
+}
+else if(exec("gpio read ".$heaterPin)=="0"){
+	$heater = "ON";
+}
+
 $s = explode("up",exec("uptime"));
 $s = explode(",", $s[1]);
 if(!empty($s[0])) $uptime = $s[0];
 
-echo($profileName . ";" . $temperature . ";" . $humidity . ";" . $lamp . ";" . $fan . ";" . $pump . ";" . $uptime);
+echo($profileName . ";" . $temperature . ";" . $humidity . ";" . $lamp . ";" . $fan . ";" . $pump . ";" . $heater . ";" . $uptime);
 ?>
