@@ -147,7 +147,7 @@ else $status = "User";
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                    <a href="editUserProfile.php" class="btn btn-default btn-flat">Edit</a>
+                    <a href="editUserProfile.php?id=<?php echo($data["id"])?>" class="btn btn-default btn-flat">Edit</a>
                     </div>
                     <div class="pull-right">
                       <a href="api/logout.php" class="btn btn-default btn-flat">Sign out</a>
