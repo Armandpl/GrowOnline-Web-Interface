@@ -11,5 +11,6 @@ try{$bdd = new PDO("mysql:host=" . $configHostBdd . ";dbname=" . $configNameBdd 
 catch (Exception $e){die($e->getMessage());}
 extract($_POST);
 if($select=="Demo mode"){$select="";}
-$bdd->exec("UPDATE profile SET Name='$select' WHERE ID='0';");    
+$bdd->exec("UPDATE profile SET Name='$select' WHERE ID='0';");
+echo("1");
 ?>	

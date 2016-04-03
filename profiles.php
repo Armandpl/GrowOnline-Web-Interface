@@ -41,7 +41,53 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script type="text/javascript">
+    function updateProfile(name){
+          alert("test");
+          $.ajax({
+            url : 'api/setProfile.php',
+            type : 'POST',
+            data : 'select=' + name,
+            dataType : 'html',
+            success : function(result, status){
+              //alert(result);
+              //$("#apikeycontain").html(result);
+              if(result ==  "1"){
+                //alert("Your account has been added with success !"); //Need un truc plus propre, armand halp
+                
+                window.location.href = "profiles.php";
+              }
+              else if(result == "2"){
+                //alert("Your account has been updated with success !"); //Need un truc plus propre, armand halp
+                var newAlert = document.createElement('div');
+                  newAlert.innerHTML = '<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Congratulations !</h4>Your account has been updated with success !</div>'
+                document.getElementById('alert').appendChild(newAlert);
+                setTimeout(function(){window.location.href = "settings.php";},3000);;
+              }
+              else if(result == "false"){
+                //alert("An error occured."); //Need un truc plus propre, armand halp
+                var newAlert = document.createElement('div');
+                  newAlert.innerHTML = '<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert !</h4>An error occurred.</div>'
+                document.getElementById('alert').appendChild(newAlert);
+                setTimeout(function(){window.location.href = "settings.php";},3000);;
+              }
+              else if(result == "incomplete"){
+                //alert("An error occured."); //Need un truc plus propre, armand halp
+                var newAlert = document.createElement('div');
+                  newAlert.innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Incomplete form</h4>The informations you entered are incomplete.</div>'
+                document.getElementById('alert').appendChild(newAlert);
+              }
+              else if(result == "403"){
+                alert("You must be connected to do this."); //Need un truc plus propre, armand halp
+                window.location.href = "index.php";
+              }
+            },
 
+            error : function(result, statut, error){
+              alert("An error occured."); //Need un truc plus propre, armand halp
+            }
+
+          });
+        }
   </script>
   </head>
   <!--
@@ -229,10 +275,10 @@ while($data=$request->fetch()){
 ?>
 
 <tr>
-  <td><input type="checkbox" <?php if($data["Name"] == $profileName) echo('checked="checked"');?> class="flat-red" ></td>
+  <td><input onclick="updateProfile('<?php echo($data["Name"]); ?>')" type="checkbox" <?php if($data["Name"] == $profileName) echo('checked="checked"');?> class="flat-red" ></td>
   <td><?php echo($data["Name"]); ?></td>
   <td class="hidden-xs"><?php echo($data["Description"]); ?></td>
-  <td><a href="edit.php?id=<?php echo($data["id"]); ?>"><button class="btn btn-success">Edit</button></a> <button class="btn btn-danger">Delete</button></td>
+  <td><a href="edit.php?id=<?php echo($data["id"]); ?>"><button class="btn btn-success">Edit</button></a> <a href="api/deleteProfile.php?name=<?php echo($data["Name"]); ?>"><button class="btn btn-danger">Delete</button></a></td>
 </tr>
 
 <?php
@@ -305,6 +351,9 @@ $request->closeCursor();
           checkboxClass: 'icheckbox_flat-green',
           radioClass: 'iradio_flat-green'
         });
+
+
+
     </script>
   </body>
 </html>
