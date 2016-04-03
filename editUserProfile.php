@@ -246,16 +246,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <?php
 					if($data["admin"] == 1){
 					?>                      
-                      <div class="form-groupe">
+                      <div class="form-group">
                         <label for="rights" class="col-sm-2 control-label">Rights</label>
+                        <div class="col-sm-10">
                         <select id="rights" class="form-control">
-                        <option value="0" <?php if($user["admin"] == 0) echo("selected"); ?> >User</option>
-                        <option value="1" <?php if($user["admin"] == 1) echo("selected"); ?> >Admin</option>
+	                        <option value="0" <?php if($user["admin"] == 0) echo("selected"); ?> >User</option>
+	                        <option value="1" <?php if($user["admin"] == 1) echo("selected"); ?> >Admin</option>
                         </select>
+                        </div>
                       </div>
 					<?php
 					}
-					?>
+					?>					
                     <div class="form-group">
                       <label for="inputEmail" class="col-sm-2 control-label">Avatar</label>
                       <div class="col-sm-10">
