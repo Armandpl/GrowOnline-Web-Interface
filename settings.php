@@ -212,7 +212,7 @@ while($data=$request->fetch()){
 ?>
 
 <div class="text-center" style="display:inline-block;">
-  <img class="profile-user-img img-responsive img-circle" src="<?php echo($avatar); ?>" alt="User profile picture">
+  <a href="editUserProfile.php?id=<?php echo($data["id"]); ?>"><img class="profile-user-img img-responsive img-circle" src="<?php echo($avatar); ?>" alt="User profile picture"></a>
   <span><?php echo($data["login"]) ?></span>
 </div>
 

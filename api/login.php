@@ -34,8 +34,7 @@ if (!$result){
 }
 else{
 	session_start();
-	$_SESSION["login"] = $result["login"];
-	$_SESSION["id"] = $result["id"];
+	$_SESSION = $result;
 	if(empty($result["avatar"])) $_SESSION["avatar"] = "dist/img/user2-160x160.jpg";
 	else $_SESSION["avatar"] = $result["avatar"];
 	$_SESSION["status"] = "User";
