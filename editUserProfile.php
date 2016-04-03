@@ -29,7 +29,7 @@ else $data["status"] = "User";
 $request->closeCursor();
 
 
-
+//echo($data["admin"]);
 if(!empty($_GET["id"]) && $_GET["id"] !== $data["id"] && $data["admin"] == 1){
 
   $request = $bdd->prepare('SELECT * FROM users WHERE id = :id');
