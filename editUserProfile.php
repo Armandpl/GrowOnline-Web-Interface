@@ -5,6 +5,56 @@ if(empty($_SESSION["login"])){
   header("location: index.php");
   exit;
 }
+
+
+try{
+  $bdd = new PDO("mysql:host=" . $configHostBdd . ";dbname=" . $configNameBdd .";charset=utf8", $configUserBdd, $configPassBdd);
+}
+catch (Exception $e){
+  die($e->getMessage());
+}
+
+$request = $bdd->prepare('SELECT * FROM users WHERE id = :id');
+$request ->execute(array(
+    'id' => $_SESSION["id"]
+    ));
+
+$data = $request->fetch();
+
+if(empty($data["avatar"])) $data["avatarURL"] = "dist/img/user2-160x160.jpg";
+else $data["avatarURL"] = $data["avatar"];
+
+if($data["admin"] == 1) $data["status"] = "Admin";
+else $data["status"] = "User";
+$request->closeCursor();
+
+
+
+if(!empty($_GET["id"]) && $_GET["id"] !== $data["id"] && $data["admin"] == 1){
+
+  $request = $bdd->prepare('SELECT * FROM users WHERE id = :id');
+  $request ->execute(array(
+      'id' => $_GET["id"]
+      ));
+  $user = $request->fetch();
+
+  if(empty($user["avatar"])) $user["avatarURL"] = "dist/img/user2-160x160.jpg";
+  else $user["avatarURL"] = $user["avatar"];
+
+
+  if($user["admin"] == 1) $user["status"] = "Admin";
+  else $user["status"] = "User";
+
+  $request->closeCursor();
+}
+else if(!empty($_GET["id"]) && $_GET["id"] == $data["id"]){
+  $user = $data;
+}
+else{
+  header("Location: index.php");
+}
+
+
 ?>
 <!DOCTYPE html>
 <!--
@@ -31,6 +81,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+
+    <link rel="stylesheet" href="plugins/iCheck/all.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -109,40 +161,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </ul>
               </li>              
               <!-- User Account: style can be found in dropdown.less -->
-
-<?php
-try{
-  $bdd = new PDO("mysql:host=" . $configHostBdd . ";dbname=" . $configNameBdd .";charset=utf8", $configUserBdd, $configPassBdd);
-}
-catch (Exception $e){
-  die($e->getMessage());
-}
-
-$request = $bdd->prepare('SELECT * FROM users WHERE id = :id');
-$request ->execute(array(
-    'id' => $_SESSION["id"]
-    ));
-
-$data = $request->fetch();
-
-if(empty($data["avatar"])) $avatar = "dist/img/user2-160x160.jpg";
-else $avatar = $data["avatar"];
-
-if($data["admin"] == 1) $status = "Admin";
-else $status = "User";
-?>
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="<?php echo($avatar) ?>" class="user-image" alt="User Image">
+                  <img src="<?php echo($data["avatarURL"]) ?>" class="user-image" alt="User Image">
                   <span class="hidden-xs"><?php echo($data["login"])?></span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-                    <img src="<?php echo($avatar) ?>" class="img-circle" alt="User Image">
+                    <img src="<?php echo($data["avatarURL"]) ?>" class="img-circle" alt="User Image">
                     <p>
                       <?php echo($data["login"])?>
-                      <small><?php echo($status) ?></small>
+                      <small><?php echo($data["status"]) ?></small>
                     </p>
                   </li>
                   <!-- Menu Footer-->
@@ -199,48 +229,79 @@ else $status = "User";
               <!-- Profile Image -->
               <div class="box box-primary">
                 <div class="box-body box-profile">
-                  <img class="profile-user-img img-responsive img-circle" src="<?php echo($_SESSION["avatar"]); ?>" alt="User profile picture">
+                  <img class="profile-user-img img-responsive img-circle" src="<?php echo($user["avatarURL"]); ?>" alt="User profile picture">
                   <h3 class="profile-username text-center">
-                    <span contenteditable="true"><?php echo($_SESSION["login"]); ?></span>
+                    <span contenteditable="true" id="inputLogin"><?php echo($user["login"]); ?></span>
                     <span class="fa fa-edit"></span>
                   </h3>
-                  <p class="text-muted text-center"><?php echo($_SESSION["status"]) ?></p>    
+                  <!-- <p class="text-muted text-center"><?php echo($user["status"]) ?></p> -->					                    
+                  <form class="form-horizontal">
+                  <div class="box-body">
+                    <div class="form-group">
+                      <label for="inputPass" class="col-sm-2 control-label">Password</label>
+                      <div class="col-sm-10">
+                        <input type="password" class="form-control" id="inputPass" placeholder="Enter a new password">
+                      </div>
+                    </div>
+                    <?php
+					if($data["admin"] == 1){
+					?>                      
+                      <div class="form-groupe">
+                        <label for="rights" class="col-sm-2 control-label">Rights</label>
+                        <select id="rights" class="form-control">
+                        <option value="0" <?php if($user["admin"] == 0) echo("selected"); ?> >User</option>
+                        <option value="1" <?php if($user["admin"] == 1) echo("selected"); ?> >Admin</option>
+                        </select>
+                      </div>
+					<?php
+					}
+					?>
+                    <div class="form-group">
+                      <label for="inputEmail" class="col-sm-2 control-label">Avatar</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" value="<?php echo($user["avatar"]); ?>" id="inputAvatar" placeholder="Enter an image URL for this account's avatar">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="inputEmail" class="col-sm-2 control-label">E-mail</label>
+                      <div class="col-sm-10">
+                        <input type="email" class="form-control" value="<?php echo($user["email"]); ?>" id="inputEmail" placeholder="Enter e-mail address">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="inputMobile" class="col-sm-2 control-label">Mobile Phone</label>
+                      <div class="col-sm-10">
+                        <input type="tel" class="form-control" value="<?php echo($user["mobile"]); ?>" id="inputMobile" placeholder="Enter mobile phone number">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">E-mail alerts</label> 
+                      <div class="col-sm-10">
+                        <input id="emailalerts" type="checkbox" class="flat-red" <?php if($user["alertemail"] == 1) echo("checked"); ?> />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">SMS alerts</label> 
+                      <div class="col-sm-10">
+                        <input id="smsalerts" type="checkbox" class="flat-red" <?php if($user["alertsms"] == 1) echo("checked"); ?> />
+                      </div>
+                    </div>
 
+                    <div class="form-group" id="apikeycontain">
+                      <label for="apikey" class="col-sm-2 control-label">SMS api key</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="inputApiKey" value="<?php echo($user["apikey"]); ?>" placeholder="API link">
+                      </div>
+                    </div>
+                  </form>                  
 
                 </div><!-- /.box-body -->
+                <div class="box-footer">
+                    <div class="pull-right">
+                        <button id="cancelButton" class="btn btn-default">Cancel</button> <button class="btn btn-primary" id="saveButton">Save</button>
+                    </div>
+                  </div><!-- /.box-footer -->
               </div><!-- /.box -->
-                       
-            <div class="box box-primary">
-
-              <div class="box-header with-border">              
-                <h3 class="box-title">Alerts/Notifications</h3>
-              </div><!-- /.box-header -->
-
-              <div class="box-body">
-              </div>
-
-            </div> 
-                       
-            <div class="box box-primary">
-
-              <div class="box-header with-border">              
-                <h3 class="box-title">SMS API</h3>                  
-              </div><!-- /.box-header -->
-
-              <div class="box-body">
-              <div class="col-xs-12">
-                <div class="form-group">
-                <label>Copy/Paste your SMS API link down below to receive SMS notifications.</label>                
-                <input placeholder="API link" type="text" min="0" class="form-control" required/>
-                <div class="pull-right" style="margin-top:10px;">
-                 <button class="btn btn-primary">Save</button>
-                </div>  
-                </div>    
-              </div>                        
-
-              </div>
-
-            </div> 
 
             </div><!-- /.col -->
           
@@ -279,6 +340,122 @@ else $status = "User";
     <!-- SlimScroll 1.3.0 -->
     <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- ChartJS 1.0.1 -->
-    <script src="plugins/chartjs/Chart.min.js"></script>     
+    <script src="plugins/chartjs/Chart.min.js"></script>    
+
+    <script src="plugins/iCheck/icheck.min.js"></script>   
+
+        <script>
+            //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-blue',
+          radioClass: 'iradio_flat-blue'
+
+        });
+
+        $("#saveButton").click(function(){
+          var login = $('#inputLogin').html();
+          var pass = $('#inputPass').val();
+          var email = $('#inputEmail').val();
+          var mobile = $('#inputMobile').val();
+          var rights = $('#rights :selected').val();
+          var apikey = $('#inputApiKey').val();
+          var emailalerts = $('#emailalerts').is(':checked');
+          var smsalerts = $('#smsalerts').is(':checked');
+          var avatar = $('#inputAvatar').val();
+          var id = getQueryVariable("id")
+          //alert(id);
+          //alert(login);
+          $.ajax({
+            url : 'api/updateUser.php',
+            type : 'POST',
+            data : 'login=' + login + '&pass=' + pass + '&email='+ email + '&mobile=' + mobile + '&alertemail=' + emailalerts + '&alertsms=' + smsalerts + '&admin=' + rights  + '&apikey=' + apikey + '&avatar=' + avatar + "&id=" + id,
+            dataType : 'html',
+            success : function(result, status){
+              //alert(result);
+              //$("#apikeycontain").html(result);
+              if(result ==  "1"){
+                //alert("Your account has been added with success !"); //Need un truc plus propre, armand halp
+                var newAlert = document.createElement('div');
+                  newAlert.innerHTML = '<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Congratulations !</h4>Your account has been added with success !</div>'
+                document.getElementById('alert').appendChild(newAlert);
+                setTimeout(function(){window.location.href = "settings.php";},3000);;
+              }
+              else if(result == "2"){
+                //alert("Your account has been updated with success !"); //Need un truc plus propre, armand halp
+                var newAlert = document.createElement('div');
+                  newAlert.innerHTML = '<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Congratulations !</h4>Your account has been updated with success !</div>'
+                document.getElementById('alert').appendChild(newAlert);
+                setTimeout(function(){window.location.href = "settings.php";},3000);;
+              }
+              else if(result == "false"){
+                //alert("An error occured."); //Need un truc plus propre, armand halp
+                var newAlert = document.createElement('div');
+                  newAlert.innerHTML = '<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert !</h4>An error occurred.</div>'
+                document.getElementById('alert').appendChild(newAlert);
+                setTimeout(function(){window.location.href = "settings.php";},3000);;
+              }
+              else if(result == "incomplete"){
+                //alert("An error occured."); //Need un truc plus propre, armand halp
+                var newAlert = document.createElement('div');
+                  newAlert.innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Incomplete form</h4>The informations you entered are incomplete.</div>'
+                document.getElementById('alert').appendChild(newAlert);
+              }
+              else if(result == "403"){
+                alert("You must be connected to do this."); //Need un truc plus propre, armand halp
+                window.location.href = "index.php";
+              }
+            },
+
+            error : function(result, statut, error){
+              alert("An error occured."); //Need un truc plus propre, armand halp
+            }
+
+          });
+          window.location.replace("dashboard.php");
+      });
+		$("#cancelButton").click(function(){
+          window.location.replace("dashboard.php");
+      });
+
+      /*$("#smsalerts").click(function(){
+        alert("test");
+        var checkTest = $('#smsalerts').is(':checked');
+          if(checkTest){
+            $("#apikeycontain").html('<label for="apikey" class="col-sm-2 control-label">SMS api key</label><div class="col-sm-10"><input type="email" class="form-control" id="apikey" placeholder="Enter your SMS api key"></div>');
+          }
+          else{
+            $("#apikeycontain").html(' ');
+          }
+          
+   
+      });*/
+
+
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] == variable) {
+      return pair[1];
+    }
+  } 
+  return 0;
+}
+
+
+
+    </script>  
+
   </body>
 </html>
