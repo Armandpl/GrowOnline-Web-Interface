@@ -2,7 +2,7 @@
 $configHostBdd="localhost";
 $configNameBdd="growonline";
 $configUserBdd="root";
-$configPassBdd="passwd";
+$configPassBdd="weedo";
 $lampPin=5;
 $fanPin=4;
 $pumpPin=3;
