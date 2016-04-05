@@ -216,13 +216,15 @@ while($data=$request->fetch()){
 <?php
 }
 $request->closeCursor();
-
+if($_SESSION["admin"]){
 ?>
 
                   <a href="addUser.php" class="btn btn-app">
                     <i class="ion ion-plus"></i> Add
                   </a>
-
+<?php
+}
+?>
                 </div>
 
               </div>
