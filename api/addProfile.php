@@ -12,10 +12,9 @@ if(empty($_SESSION["login"]) || empty($_SESSION["admin"])){
 	exit();
 }
 
-if(empty($_POST["name"]) || empty($_POST["sunrise"]) || empty($_POST["sunset"]) || empty($_POST["interval"]) || empty($_POST["working_time"]) || 
-	empty($_POST["pump_flow"]) || empty($_POST["watering_hour"]) || empty($_POST["water_amount"]) || empty($_POST["temperature"]) || empty($_POST["humidity"])){
-	echo("incomplete");
-	exit();
+if(empty($_POST["name"]) || empty($_POST["sunrise"]) || empty($_POST["sunset"]) || empty($_POST["interval"]) || empty($_POST["working_time"]) || empty($_POST["temperature"]) || empty($_POST["humidity"])){
+	echo("incomplete"); 
+	exit(); 
 }
 include("config.php");
 

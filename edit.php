@@ -129,6 +129,42 @@ else $avatar = $data["avatar"];
 
 if($data["admin"] == 1) $status = "Admin";
 else $status = "User";
+
+$Sunset="00:00";
+$Sunrise="00:00";
+$Interval="00:00";
+$Working_Time="00:00";
+$Tank_Capacity="00:00";
+$Watering_Hour="00:00";  
+
+if(isset($_GET["id"]))
+{    
+  $resultats=$bdd->query("SELECT * FROM profiles WHERE id=".$_GET["id"]);    
+  $resultats->setFetchMode(PDO::FETCH_OBJ); // on dit qu'on veut que le résultat soit récupérable sous forme d'objet
+  while( $ligne = $resultats->fetch() )
+  {
+      $Name=$ligne->Name;
+      $Description=$ligne->Description;
+      $Sunset=$ligne->Sunset;
+      $Sunrise=$ligne->Sunrise;
+      $Interval=$ligne->Interval;
+      $Working_Time=$ligne->Working_Time;
+      $Tank_Capacity=$ligne->Tank_Capacity;
+      $Pump_Flow=$ligne->Pump_Flow;
+      $Watering_Hour=$ligne->Watering_Hour;
+      $Water_Amount=$ligne->Water_Amount;
+      $Temperature=$ligne->Temperature;
+      $Humidity=$ligne->Humidity;
+      $Monday=$ligne->Monday;
+      $Tuesday=$ligne->Tuesday;
+      $Wednesday=$ligne->Wednesday;
+      $Thursday=$ligne->Thursday;
+      $Friday=$ligne->Friday;
+      $Saturday=$ligne->Saturday;
+      $Sunday=$ligne->Sunday;     
+  }
+  $resultats->closeCursor(); /// on ferme le curseur des résultats  
+}
 ?>
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -196,7 +232,7 @@ else $status = "User";
         <div class="col-md-4 col-sm-6 col-xs-12">
           <h4>Profile Name</h4>
           <div class="form-group">
-          <input id="inputName" name="profile" type="text" min="0" class="form-control" required/>
+          <input value=<?php echo "'".$Name."'";?> id="inputName" name="profile" type="text" min="0" class="form-control" required/>
           </div>        
         </div>  
         </div>
@@ -206,7 +242,7 @@ else $status = "User";
 
         <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="form-group">
-          <textarea class="form-control" id="inputDescription" rows="2" placeholder="Write a short description" maxlength="100"></textarea>
+          <textarea class="form-control" id="inputDescription" rows="2" placeholder="Write a short description" maxlength="100" style="resize: none;"><?php echo $Description;?></textarea>
           </div>        
         </div>  
 
@@ -227,14 +263,14 @@ else $status = "User";
                       <div class="col-sm-3 col-xs-12">
                        <h5>Sunrise</h5>
                         <div class="form-group">
-                        <input id="inputSunrise" name="sunrise" type="time" value="00:00" class="form-control" required/>
+                        <input value=<?php echo "'".$Sunrise."'";?> id="inputSunrise" name="sunrise" type="time" class="form-control" required/>
                         </div>        
                       </div>      
                               
                       <div class="col-sm-3 col-xs-12">
                        <h5>Sunset</h5>
                         <div class="form-group">
-                        <input id="inputSunset" name="sunset" type="time" value="00:00" class="form-control" required/>
+                        <input value=<?php echo "'".$Sunset."'";?> id="inputSunset" name="sunset" type="time" class="form-control" required/>
                         </div>        
                       </div>          
 
@@ -256,14 +292,14 @@ else $status = "User";
                       <div class="col-sm-3 col-xs-12">
                        <h5>Working Time</h5>
                         <div class="form-group">
-                        <input id="inputWorkingTime" name="working_time" type="time" value="00:00" class="form-control" required/>
+                        <input value=<?php echo "'".$Working_Time."'";?> id="inputWorkingTime" name="working_time" type="time" class="form-control" required/>
                         </div>        
                       </div>      
                               
                       <div class="col-sm-3 col-xs-12">
                        <h5>Interval</h5>
                         <div class="form-group">
-                        <input id="inputInterval" name="interval" type="time" value="00:00" class="form-control" required/>
+                        <input value=<?php echo "'".$Interval."'";?> id="inputInterval" name="interval" type="time" class="form-control" required/>
                         </div>        
                       </div>          
 
@@ -288,31 +324,31 @@ else $status = "User";
                       <h4>Water Days</h4>
 
                             <label style="display:block;">
-                              <input id="inputMonday" type="checkbox" class="flat-red" >
+                              <input <?php if($Monday==1){echo "checked='checked'";} ?> id="inputMonday" type="checkbox" class="flat-red" >
                               Monday
                             </label> 
                             <label style="display:block;">
-                              <input checked='checked' id="inputTuesday" type="checkbox" class="flat-red" >
+                              <input <?php if($Tuesday==1){echo "checked='checked'";} ?> id="inputTuesday" type="checkbox" class="flat-red" >
                               Tuesday
                             </label> 
                             <label style="display:block;">
-                              <input id="inputWednesday" type="checkbox" class="flat-red" >
+                              <input <?php if($Wednesday==1){echo "checked='checked'";} ?> id="inputWednesday" type="checkbox" class="flat-red" >
                               Wednesday
                             </label> 
                             <label style="display:block;">
-                              <input id="inputThursday" type="checkbox" class="flat-red" >
+                              <input <?php if($Thursday==1){echo "checked='checked'";} ?> id="inputThursday" type="checkbox" class="flat-red" >
                               Thursday
                             </label> 
                             <label style="display:block;">
-                              <input id="inputFriday" type="checkbox" class="flat-red" >
+                              <input <?php if($Friday==1){echo "checked='checked'";} ?> id="inputFriday" type="checkbox" class="flat-red" >
                               Friday
                             </label> 
                             <label style="display:block;">
-                              <input id="inputSaturday" type="checkbox" class="flat-red" >
+                              <input <?php if($Saturday==1){echo "checked='checked'";} ?> id="inputSaturday" type="checkbox" class="flat-red" >
                               Saturday
                             </label> 
                             <label style="display:block;">
-                              <input id="inputSunday" type="checkbox" class="flat-red" >
+                              <input <?php if($Sunday==1){echo "checked='checked'";} ?> id="inputSunday" type="checkbox" class="flat-red" >
                               Sunday
                             </label> 
 
@@ -322,28 +358,28 @@ else $status = "User";
                     <div class="col-sm-4 col-xs-12">
                      <h5>Tank Capacity</h5> 
                       <div class="form-group">
-                      <input id="inputTankCapacity" name="tank_capacity" type="number" min="0" step="0.1" class="form-control" value="0" required/>
+                      <input value=<?php echo "'".$Tank_Capacity."'";?> id="inputTankCapacity" name="tank_capacity" placeholder="cL" type="number" min="0" step="0.1" class="form-control" required/>
                       </div>        
                     </div>      
                             
                     <div class="col-sm-4 col-xs-12">
                      <h5>Pump Flow</h5>
                       <div class="form-group">
-                      <input id="inputPumpFlow" name="pump_flow" type="number" min="0" step="0.1" value="105" class="form-control" required/>
+                      <input value=<?php echo "'".$Pump_Flow."'";?> id="inputPumpFlow" name="pump_flow" placeholder="cL/min" type="number" min="0" step="0.1" class="form-control" required/>
                       </div>        
                     </div>          
                       
                     <div class="col-sm-4 col-xs-12">
                      <h5>Watering Hour</h5>
                       <div class="form-group">
-                      <input id="inputWateringHour" name="watering_hour" type="time" value="" class="form-control" required/>
+                      <input value=<?php echo "'".$Watering_Hour."'";?> id="inputWateringHour" name="watering_hour" type="time" value="" class="form-control" required/>
                       </div>        
                     </div>      
                     
                     <div class="col-sm-4 col-xs-12">
                      <h5>Amount of water</h5>
                       <div class="form-group">
-                      <input id="inputWaterAmount" name="water" type="number" min="0" step="0.1" value="25" class="form-control" required/>
+                      <input value=<?php echo "'".$Water_Amount."'";?> id="inputWaterAmount" name="water" placeholder="cL" type="number" min="0" step="0.1" value="25" class="form-control" required/>
                       </div>        
                     </div>    
                   </div><!-- /.box-body -->
@@ -364,14 +400,14 @@ else $status = "User";
                       <div class="col-sm-3 col-xs-12">
                        <h5>Temperature</h5>
                         <div class="form-group">
-                        <input id="inputTemperature" name="temperature" type="number" min="0" max="50" step="0.1" class="form-control" value="25" required/>
+                        <input value=<?php echo "'".$Temperature."'";?> id="inputTemperature" name="temperature" type="number" min="0" max="50" step="0.1" class="form-control" required/>
                         </div>        
                       </div>      
                               
                       <div class="col-sm-3 col-xs-12">
                        <h5>Humidity</h5>
                         <div class="form-group">
-                        <input id="inputHumidity" name="humidity" type="number" min="0" max="100" step="0.1" class="form-control" value="50" required/>
+                        <input value=<?php echo "'".$Humidity."'";?> id="inputHumidity" name="humidity" type="number" min="0" max="100" step="0.1" class="form-control" required/>
                         </div>        
                       </div>          
 
@@ -455,13 +491,13 @@ else $status = "User";
           var sunset = $('#inputSunset').val();
           var workingTime = $('#inputWorkingTime').val();
           var interval = $('#inputInterval').val();
-          var monday = $('#inputMonday').is(':checked');
-          var tuesday = $('#inputTuesday').is(':checked');
-          var thursday = $('#inputThursday').is(':checked');
-          var wednesday = $('#inputWednesday').is(':checked');
-          var friday = $('#inputFriday').is(':checked');
-          var saturday = $('#inputSaturday').is(':checked');
-          var sunday = $('#inputSunday').is(':checked');
+          var monday = ($('#inputMonday').is(':checked')?1:0);
+          var tuesday = ($('#inputTuesday').is(':checked')?1:0);
+          var thursday = ($('#inputThursday').is(':checked')?1:0);
+          var wednesday = ($('#inputWednesday').is(':checked')?1:0);
+          var friday = ($('#inputFriday').is(':checked')?1:0);
+          var saturday = ($('#inputSaturday').is(':checked')?1:0);
+          var sunday = ($('#inputSunday').is(':checked')?1:0);
           var tankCapacity = $('#inputTankCapacity').val();
           var pumpFlow = $('#inputPumpFlow').val();
           var wateringHour = $('#inputWateringHour').val();

@@ -2,7 +2,7 @@
 $configHostBdd="localhost";
 $configNameBdd="growonline";
 $configUserBdd="root";
-$configPassBdd="root";
+$configPassBdd="psswd";
 $lampPin=5;
 $fanPin=4;
 $pumpPin=3;

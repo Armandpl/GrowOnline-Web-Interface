@@ -11,7 +11,7 @@ if(empty($_SESSION["login"]) || empty($_SESSION["admin"])){
 	exit();
 }
 
-if(empty($_GET["name"])){
+if(empty($_GET["id"])){
 	header("Location: ../profiles.php");
 	exit();
 }
@@ -29,9 +29,9 @@ catch (Exception $e){
 
 
 
-$request = $bdd->prepare("DELETE FROM profiles WHERE Name=:name;");			
+$request = $bdd->prepare("DELETE FROM profiles WHERE id=:id;");			
 $request->execute(array(
-	"name" => $_GET["name"]
+	"id" => $_GET["id"]
 ));
 $request->closeCursor();
 header("Location: ../profiles.php");

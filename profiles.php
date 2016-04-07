@@ -278,7 +278,7 @@ while($data=$request->fetch()){
   <td><input onclick="updateProfile('<?php echo($data["Name"]); ?>')" type="checkbox" <?php if($data["Name"] == $profileName) echo('checked="checked"');?> class="flat-red" ></td>
   <td><?php echo($data["Name"]); ?></td>
   <td class="hidden-xs"><?php echo($data["Description"]); ?></td>
-  <td><a href="edit.php?id=<?php echo($data["id"]); ?>"><button class="btn btn-success">Edit</button></a> <a href="api/deleteProfile.php?name=<?php echo($data["Name"]); ?>"><button class="btn btn-danger">Delete</button></a></td>
+  <td><a href="edit.php?id=<?php echo($data["id"]); ?>"><button class="btn btn-success">Edit</button></a> <a href="api/deleteProfile.php?id=<?php echo($data["id"]); ?>"><button class="btn btn-danger">Delete</button></a></td>
 </tr>
 
 <?php
