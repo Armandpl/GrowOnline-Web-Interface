@@ -275,7 +275,7 @@ while($data=$request->fetch()){
 ?>
 
 <tr>
-  <td><input onclick="updateProfile('<?php echo($data["Name"]); ?>')" type="checkbox" <?php if($data["Name"] == $profileName) echo('checked="checked"');?> class="flat-red" ></td>
+  <td><input type="checkbox" <?php if($data["Name"] == $profileName) echo('checked="checked"');?> class="flat-red"></td>
   <td><?php echo($data["Name"]); ?></td>
   <td class="hidden-xs"><?php echo($data["Description"]); ?></td>
   <td><a href="edit.php?id=<?php echo($data["id"]); ?>"><button class="btn btn-success">Edit</button></a> <a href="api/deleteProfile.php?id=<?php echo($data["id"]); ?>"><button class="btn btn-danger">Delete</button></a></td>
@@ -336,7 +336,7 @@ $request->closeCursor();
     <script src="plugins/iCheck/icheck.min.js"></script>  
 
     <script>
-            //iCheck for checkbox and radio inputs
+        //iCheck for checkbox and radio inputs
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
           checkboxClass: 'icheckbox_minimal-blue',
           radioClass: 'iradio_minimal-blue'
