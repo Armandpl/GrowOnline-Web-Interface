@@ -32,6 +32,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
 
+    <link rel="stylesheet" href="dist/css/main.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -104,7 +106,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </li>
                   <li class="footer"><a href="#">View all</a></li>
                 </ul>
-              </li>              
+              </li>
               <!-- User Account: style can be found in dropdown.less -->
 
 <?php
@@ -154,7 +156,7 @@ else $status = "User";
                 </ul>
 
               </li>
-              
+
             </ul>
           </div>
         </nav>
@@ -181,7 +183,7 @@ else $status = "User";
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-         
+
         </section>
 
         <!-- Main content -->
@@ -189,11 +191,11 @@ else $status = "User";
 
         <div class="row">
 
-            <div class="col-xs-12">   
+            <div class="col-xs-12">
 
               <div class="box box-primary">
 
-                <div class="box-header with-border">              
+                <div class="box-header with-border">
                   <h3 class="box-title">Users</h3>
                 </div><!-- /.box-header -->
 
@@ -208,7 +210,7 @@ while($data=$request->fetch()){
   else $avatar = $data["avatar"];
 ?>
 
-<div class="text-center" style="display:inline-block;">
+<div class="text-center user-image" style="display:inline-block;">
   <a href="editUserProfile.php?id=<?php echo($data["id"]); ?>"><img class="profile-user-img img-responsive img-circle" src="<?php echo($avatar); ?>" alt="User profile picture"></a>
   <span><?php echo($data["login"]) ?></span>
 </div>
@@ -219,7 +221,7 @@ $request->closeCursor();
 if($_SESSION["admin"]){
 ?>
 
-                  <a href="addUser.php" class="btn btn-app">
+                  <a href="addUser.php" class="btn btn-app add-user-btn">
                     <i class="ion ion-plus"></i> Add
                   </a>
 <?php
@@ -231,16 +233,16 @@ if($_SESSION["admin"]){
 
             </div>
 
-            <div class="col-xs-12">   
-                       
+            <div class="col-xs-12">
+
               <div class="box box-primary">
 
-                <div class="box-header with-border">              
+                <div class="box-header with-border">
                   <h3 class="box-title">Wifi Config</h3>
                 </div><!-- /.box-header -->
 
                 <div class="box-body">
-                  <div class="col-xs-12">              
+                  <div class="col-xs-12">
                     <div class="form-group">
                       <label>Security Type</label>
                       <select class="form-control">
@@ -254,14 +256,14 @@ if($_SESSION["admin"]){
                       <input placeholder="Password" type="text" min="0" class="form-control" required/>
                       <div class="pull-right" style="margin-top:10px;">
                        <button class="btn btn-primary">Save</button>
-                      </div>      
+                      </div>
                     </div>
                 </div>
 
               </div>
 
             </div>
-          
+
         </div> <!--/.row-->
         </section><!-- /.content -->
 
@@ -297,6 +299,6 @@ if($_SESSION["admin"]){
     <!-- SlimScroll 1.3.0 -->
     <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- ChartJS 1.0.1 -->
-    <script src="plugins/chartjs/Chart.min.js"></script>     
+    <script src="plugins/chartjs/Chart.min.js"></script>
   </body>
 </html>
