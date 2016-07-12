@@ -5,3 +5,21 @@
 .add-user-btn {
   margin-top: 25px;
 }
+
+.disable-animations, .disable-animations * {
+/* CSS transitions */
+-o-transition-property: none !important;
+-moz-transition-property: none !important;
+-webkit-transition-property: none !important;
+transition-property: none !important;
+/* CSS transforms */
+-o-transform: none !important;
+-moz-transform: none !important;
+-webkit-transform: none !important;
+transform: none !important;
+/* CSS animations */
+-webkit-animation: none !important;
+-moz-animation: none !important;
+-o-animation: none !important;
+animation: none !important;
+}

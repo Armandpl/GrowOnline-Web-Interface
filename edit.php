@@ -34,6 +34,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <link rel="stylesheet" href="plugins/iCheck/all.css">
 
+    <link rel="stylesheet" href="dist/css/main.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -78,7 +80,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Header Navbar -->
         <nav class="navbar navbar-static-top" role="navigation">
           <!-- Sidebar toggle button-->
-          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+          <a href="#" class="sidebar-toggle" onclick="toggleSidebar()" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
           </a>
           <!-- Navbar Right Menu -->
@@ -106,7 +108,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </li>
                   <li class="footer"><a href="#">View all</a></li>
                 </ul>
-              </li>              
+              </li>
               <!-- User Account: style can be found in dropdown.less -->
 
 <?php
@@ -135,11 +137,11 @@ $Sunrise="00:00";
 $Interval="00:00";
 $Working_Time="00:00";
 $Tank_Capacity="00:00";
-$Watering_Hour="00:00";  
+$Watering_Hour="00:00";
 
 if(isset($_GET["id"]))
-{    
-  $resultats=$bdd->query("SELECT * FROM profiles WHERE id=".$_GET["id"]);    
+{
+  $resultats=$bdd->query("SELECT * FROM profiles WHERE id=".$_GET["id"]);
   $resultats->setFetchMode(PDO::FETCH_OBJ); // on dit qu'on veut que le résultat soit récupérable sous forme d'objet
   while( $ligne = $resultats->fetch() )
   {
@@ -161,9 +163,9 @@ if(isset($_GET["id"]))
       $Thursday=$ligne->Thursday;
       $Friday=$ligne->Friday;
       $Saturday=$ligne->Saturday;
-      $Sunday=$ligne->Sunday;     
+      $Sunday=$ligne->Sunday;
   }
-  $resultats->closeCursor(); /// on ferme le curseur des résultats  
+  $resultats->closeCursor(); /// on ferme le curseur des résultats
 }
 ?>
               <li class="dropdown user user-menu">
@@ -192,7 +194,7 @@ if(isset($_GET["id"]))
                 </ul>
 
               </li>
-              
+
             </ul>
           </div>
         </nav>
@@ -219,11 +221,11 @@ if(isset($_GET["id"]))
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-         
+
         </section>
         <!-- Main content -->
         <section class="content">
-        
+
         <div class="box box-primary">
         <div class="box-body">
 
@@ -233,8 +235,8 @@ if(isset($_GET["id"]))
           <h4>Profile Name</h4>
           <div class="form-group">
           <input value=<?php echo "'".$Name."'";?> id="inputName" name="profile" type="text" min="0" class="form-control" required/>
-          </div>        
-        </div>  
+          </div>
+        </div>
         </div>
 
         <div class="row">
@@ -243,8 +245,8 @@ if(isset($_GET["id"]))
         <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="form-group">
           <textarea class="form-control" id="inputDescription" rows="2" placeholder="Write a short description" maxlength="100" style="resize: none;"><?php echo $Description;?></textarea>
-          </div>        
-        </div>  
+          </div>
+        </div>
 
         </div>
 
@@ -264,15 +266,15 @@ if(isset($_GET["id"]))
                        <h5>Sunrise</h5>
                         <div class="form-group">
                         <input value=<?php echo "'".$Sunrise."'";?> id="inputSunrise" name="sunrise" type="time" class="form-control" required/>
-                        </div>        
-                      </div>      
-                              
+                        </div>
+                      </div>
+
                       <div class="col-sm-3 col-xs-12">
                        <h5>Sunset</h5>
                         <div class="form-group">
                         <input value=<?php echo "'".$Sunset."'";?> id="inputSunset" name="sunset" type="time" class="form-control" required/>
-                        </div>        
-                      </div>          
+                        </div>
+                      </div>
 
                   </div><!-- /.box-body -->
 
@@ -293,21 +295,21 @@ if(isset($_GET["id"]))
                        <h5>Working Time</h5>
                         <div class="form-group">
                         <input value=<?php echo "'".$Working_Time."'";?> id="inputWorkingTime" name="working_time" type="time" class="form-control" required/>
-                        </div>        
-                      </div>      
-                              
+                        </div>
+                      </div>
+
                       <div class="col-sm-3 col-xs-12">
                        <h5>Interval</h5>
                         <div class="form-group">
                         <input value=<?php echo "'".$Interval."'";?> id="inputInterval" name="interval" type="time" class="form-control" required/>
-                        </div>        
-                      </div>          
+                        </div>
+                      </div>
 
                     </div><!-- /.box-body -->
 
                 </div><!-- /.box -->
             </div>
-            
+
         </div><!--/.row-->
         <div class="row">
 
@@ -326,62 +328,62 @@ if(isset($_GET["id"]))
                             <label style="display:block;">
                               <input <?php if($Monday==1){echo "checked='checked'";} ?> id="inputMonday" type="checkbox" class="flat-red" >
                               Monday
-                            </label> 
+                            </label>
                             <label style="display:block;">
                               <input <?php if($Tuesday==1){echo "checked='checked'";} ?> id="inputTuesday" type="checkbox" class="flat-red" >
                               Tuesday
-                            </label> 
+                            </label>
                             <label style="display:block;">
                               <input <?php if($Wednesday==1){echo "checked='checked'";} ?> id="inputWednesday" type="checkbox" class="flat-red" >
                               Wednesday
-                            </label> 
+                            </label>
                             <label style="display:block;">
                               <input <?php if($Thursday==1){echo "checked='checked'";} ?> id="inputThursday" type="checkbox" class="flat-red" >
                               Thursday
-                            </label> 
+                            </label>
                             <label style="display:block;">
                               <input <?php if($Friday==1){echo "checked='checked'";} ?> id="inputFriday" type="checkbox" class="flat-red" >
                               Friday
-                            </label> 
+                            </label>
                             <label style="display:block;">
                               <input <?php if($Saturday==1){echo "checked='checked'";} ?> id="inputSaturday" type="checkbox" class="flat-red" >
                               Saturday
-                            </label> 
+                            </label>
                             <label style="display:block;">
                               <input <?php if($Sunday==1){echo "checked='checked'";} ?> id="inputSunday" type="checkbox" class="flat-red" >
                               Sunday
-                            </label> 
+                            </label>
 
-                            
-                      </div>  
+
+                      </div>
 
                     <div class="col-sm-4 col-xs-12">
-                     <h5>Tank Capacity</h5> 
+                     <h5>Tank Capacity</h5>
                       <div class="form-group">
                       <input value=<?php echo "'".$Tank_Capacity."'";?> id="inputTankCapacity" name="tank_capacity" placeholder="cL" type="number" min="0" step="0.1" class="form-control" required/>
-                      </div>        
-                    </div>      
-                            
+                      </div>
+                    </div>
+
                     <div class="col-sm-4 col-xs-12">
                      <h5>Pump Flow</h5>
                       <div class="form-group">
                       <input value=<?php echo "'".$Pump_Flow."'";?> id="inputPumpFlow" name="pump_flow" placeholder="cL/min" type="number" min="0" step="0.1" class="form-control" required/>
-                      </div>        
-                    </div>          
-                      
+                      </div>
+                    </div>
+
                     <div class="col-sm-4 col-xs-12">
                      <h5>Watering Hour</h5>
                       <div class="form-group">
                       <input value=<?php echo "'".$Watering_Hour."'";?> id="inputWateringHour" name="watering_hour" type="time" value="" class="form-control" required/>
-                      </div>        
-                    </div>      
-                    
+                      </div>
+                    </div>
+
                     <div class="col-sm-4 col-xs-12">
                      <h5>Amount of water</h5>
                       <div class="form-group">
                       <input value=<?php echo "'".$Water_Amount."'";?> id="inputWaterAmount" name="water" placeholder="cL" type="number" min="0" step="0.1" value="25" class="form-control" required/>
-                      </div>        
-                    </div>    
+                      </div>
+                    </div>
                   </div><!-- /.box-body -->
 
               </div><!-- /.box -->
@@ -401,31 +403,31 @@ if(isset($_GET["id"]))
                        <h5>Temperature</h5>
                         <div class="form-group">
                         <input value=<?php echo "'".$Temperature."'";?> id="inputTemperature" name="temperature" type="number" min="0" max="50" step="0.1" class="form-control" required/>
-                        </div>        
-                      </div>      
-                              
+                        </div>
+                      </div>
+
                       <div class="col-sm-3 col-xs-12">
                        <h5>Humidity</h5>
                         <div class="form-group">
                         <input value=<?php echo "'".$Humidity."'";?> id="inputHumidity" name="humidity" type="number" min="0" max="100" step="0.1" class="form-control" required/>
-                        </div>        
-                      </div>          
+                        </div>
+                      </div>
 
                     </div><!-- /.box-body -->
 
                 </div><!-- /.box -->
 
-            </div> 
+            </div>
             <div id="alert" class="col-md-4 col-md-offset-4 col-xs-12"></div>
-           
-            
+
+
         </div><!--/.row-->
 
-         <div class="col-xs-12"> 
+         <div class="col-xs-12">
           <div class="pull-right">
           <button id="saveButton" type="submit" class="btn btn-success btn-lg">Save</button> <a href="profiles.php"><button type="cancel" class="btn bg-gray btn-lg">cancel</button></a>
           </div>
-         </div> 
+         </div>
 
         </div>
         </div>
@@ -462,10 +464,12 @@ if(isset($_GET["id"]))
     <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <!-- SlimScroll 1.3.0 -->
     <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
-    <!-- ChartJS 1.0.1 -->    
-    <script src="plugins/chartjs/Chart.min.js"></script>  
+    <!-- ChartJS 1.0.1 -->
+    <script src="plugins/chartjs/Chart.min.js"></script>
 
-    <script src="plugins/iCheck/icheck.min.js"></script>  
+    <script src="plugins/iCheck/icheck.min.js"></script>
+
+    <script src="dist/js/main.js"></script>
 
     <script>
             //iCheck for checkbox and radio inputs
@@ -562,7 +566,7 @@ else{
             }
 
           });
-   
+
         });
 
 

@@ -47,7 +47,7 @@
               </div>
             </div><!-- /.col -->
             <div class="col-xs-4">
-              <input type="submit" id="loginButton" class="btn btn-primary btn-block btn-flat" value="Go !" />
+              <input id="goButton" class="btn btn-primary btn-block btn-flat" value="Go !" />
             </div><!-- /.col -->
           </div>
           </form>
@@ -63,6 +63,60 @@
     <!-- iCheck -->
     <script src="plugins/iCheck/icheck.min.js"></script>
     <script>
+          $("#goButton").click(function(){
+          var login = $('#inputLogin').val();
+          var pass = $('#inputPass').val();
+          var email = "";
+          var mobile = "";
+          var rights = true;          
+          $.ajax({
+            url : 'api/addUser.php',
+            type : 'POST',
+            data : 'login=' + login + '&pass=' + pass + '&email='+ email + '&mobile=' + mobile + '&admin=' + rights,
+            dataType : 'html',
+            success : function(result, status){
+              //$("#apikeycontain").html(result);
+              if(result ==  "1"){
+                //alert("Your account has been added with success !"); //Need un truc plus propre, armand halp
+                var newAlert = document.createElement('div');
+                  newAlert.innerHTML = '<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Congratulations !</h4>Your account has been added with success !</div>'
+                document.getElementById('alert').appendChild(newAlert);
+                setTimeout(function(){window.location.href = "dashboard.php";},3000);;
+              }
+              else if(result == "2"){
+                //alert("Your account has been updated with success !"); //Need un truc plus propre, armand halp
+                var newAlert = document.createElement('div');
+                  newAlert.innerHTML = '<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Congratulations !</h4>Your account has been updated with success !</div>'
+                document.getElementById('alert').appendChild(newAlert);
+                setTimeout(function(){window.location.href = "settings.php";},3000);;
+              }
+              else if(result == "false"){
+                //alert("An error occured."); //Need un truc plus propre, armand halp
+                var newAlert = document.createElement('div');
+                  newAlert.innerHTML = '<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert !</h4>An error occurred.</div>'
+                document.getElementById('alert').appendChild(newAlert);
+                setTimeout(function(){window.location.href = "settings.php";},3000);;
+              }
+              else if(result == "incomplete"){
+                //alert("incomplete"); //Need un truc plus propre, armand halp
+                var newAlert = document.createElement('div');
+                  newAlert.innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Incomplete form</h4>The informations you entered are incomplete.</div>'
+                document.getElementById('alert').appendChild(newAlert);
+              }
+              else if(result == "403"){
+                alert("You must be connected to do this."); //Need un truc plus propre, armand halp
+                window.location.href = "index.php";
+              }
+            },
+
+            error : function(result, statut, error){
+              alert("An error occured."); //Need un truc plus propre, armand halp
+            }
+
+          });
+
+      });
+
       $(function () {
         $('input').iCheck({
           checkboxClass: 'icheckbox_square-blue',

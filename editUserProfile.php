@@ -84,6 +84,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <link rel="stylesheet" href="plugins/iCheck/all.css">
 
+    <link rel="stylesheet" href="dist/css/main.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -131,7 +133,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Header Navbar -->
         <nav class="navbar navbar-static-top" role="navigation">
           <!-- Sidebar toggle button-->
-          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+          <a href="#" class="sidebar-toggle" onclick="toggleSidebar()" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
           </a>
           <!-- Navbar Right Menu -->
@@ -159,7 +161,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </li>
                   <li class="footer"><a href="#">View all</a></li>
                 </ul>
-              </li>              
+              </li>
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -187,7 +189,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </ul>
 
               </li>
-              
+
             </ul>
           </div>
         </nav>
@@ -234,7 +236,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <span contenteditable="true" id="inputLogin"><?php echo($user["login"]); ?></span>
                     <span class="fa fa-edit"></span>
                   </h3>
-                  <!-- <p class="text-muted text-center"><?php echo($user["status"]) ?></p> -->					                    
+                  <!-- <p class="text-muted text-center"><?php echo($user["status"]) ?></p> -->
                   <form class="form-horizontal">
                   <div class="box-body">
                     <div class="form-group">
@@ -245,7 +247,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
                     <?php
 					if($data["admin"] == 1){
-					?>                      
+					?>
                       <div class="form-group">
                         <label for="rights" class="col-sm-2 control-label">Rights</label>
                         <div class="col-sm-10">
@@ -257,7 +259,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       </div>
 					<?php
 					}
-					?>					
+					?>
                     <div class="form-group">
                       <label for="inputEmail" class="col-sm-2 control-label">Avatar</label>
                       <div class="col-sm-10">
@@ -277,13 +279,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="col-sm-2 control-label">E-mail alerts</label> 
+                      <label class="col-sm-2 control-label">E-mail alerts</label>
                       <div class="col-sm-10">
                         <input id="emailalerts" type="checkbox" class="flat-red" <?php if($user["alertemail"] == 1) echo("checked"); ?> />
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="col-sm-2 control-label">SMS alerts</label> 
+                      <label class="col-sm-2 control-label">SMS alerts</label>
                       <div class="col-sm-10">
                         <input id="smsalerts" type="checkbox" class="flat-red" <?php if($user["alertsms"] == 1) echo("checked"); ?> />
                       </div>
@@ -295,7 +297,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <input type="text" class="form-control" id="inputApiKey" value="<?php echo($user["apikey"]); ?>" placeholder="API link">
                       </div>
                     </div>
-                  </form>                  
+                  </form>
 
                 </div><!-- /.box-body -->
                 <div class="box-footer">
@@ -306,7 +308,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </div><!-- /.box -->
 
             </div><!-- /.col -->
-          
+
         </div> <!--/.row-->
         </section><!-- /.content -->
 
@@ -342,9 +344,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- SlimScroll 1.3.0 -->
     <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- ChartJS 1.0.1 -->
-    <script src="plugins/chartjs/Chart.min.js"></script>    
+    <script src="plugins/chartjs/Chart.min.js"></script>
 
-    <script src="plugins/iCheck/icheck.min.js"></script>   
+    <script src="plugins/iCheck/icheck.min.js"></script>
+
+    <script src="dist/js/main.js"></script>
 
         <script>
             //iCheck for checkbox and radio inputs
@@ -438,8 +442,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           else{
             $("#apikeycontain").html(' ');
           }
-          
-   
+
+
       });*/
 
 
@@ -451,13 +455,13 @@ function getQueryVariable(variable) {
     if (pair[0] == variable) {
       return pair[1];
     }
-  } 
+  }
   return 0;
 }
 
 
 
-    </script>  
+    </script>
 
   </body>
 </html>

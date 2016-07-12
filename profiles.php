@@ -18,6 +18,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <title>Grow Online</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
@@ -33,6 +34,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
 
     <link rel="stylesheet" href="plugins/iCheck/all.css">
+
+    <link rel="stylesheet" href="dist/css/main.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -53,7 +56,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               //$("#apikeycontain").html(result);
               if(result ==  "1"){
                 //alert("Your account has been added with success !"); //Need un truc plus propre, armand halp
-                
+
                 window.location.href = "profiles.php";
               }
               else if(result == "2"){
@@ -127,7 +130,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Header Navbar -->
         <nav class="navbar navbar-static-top" role="navigation">
           <!-- Sidebar toggle button-->
-          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+          <a href="#" class="sidebar-toggle" onclick="toggleSidebar()" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
           </a>
           <!-- Navbar Right Menu -->
@@ -155,7 +158,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </li>
                   <li class="footer"><a href="#">View all</a></li>
                 </ul>
-              </li>              
+              </li>
               <!-- User Account: style can be found in dropdown.less -->
 
 <?php
@@ -205,7 +208,7 @@ else $status = "User";
                 </ul>
 
               </li>
-              
+
             </ul>
           </div>
         </nav>
@@ -232,7 +235,7 @@ else $status = "User";
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-         
+
         </section>
 
         <!-- Main content -->
@@ -323,6 +326,8 @@ $request->closeCursor();
     <script src="plugins/fastclick/fastclick.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/app.min.js"></script>
+
+    <script src="dist/js/main.js"></script>
     <!-- Sparkline -->
     <script src="plugins/sparkline/jquery.sparkline.min.js"></script>
     <!-- jvectormap -->
@@ -330,10 +335,10 @@ $request->closeCursor();
     <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <!-- SlimScroll 1.3.0 -->
     <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
-    <!-- ChartJS 1.0.1 -->    
-    <script src="plugins/chartjs/Chart.min.js"></script>  
+    <!-- ChartJS 1.0.1 -->
+    <script src="plugins/chartjs/Chart.min.js"></script>
 
-    <script src="plugins/iCheck/icheck.min.js"></script>  
+    <script src="plugins/iCheck/icheck.min.js"></script>
 
     <script>
         //iCheck for checkbox and radio inputs

@@ -34,6 +34,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <link rel="stylesheet" href="plugins/iCheck/all.css">
 
+    <link rel="stylesheet" href="dist/css/main.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -78,7 +80,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Header Navbar -->
         <nav class="navbar navbar-static-top" role="navigation">
           <!-- Sidebar toggle button-->
-          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+          <a href="#" class="sidebar-toggle" onclick="toggleSidebar()" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
           </a>
           <!-- Navbar Right Menu -->
@@ -106,7 +108,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </li>
                   <li class="footer"><a href="#">View all</a></li>
                 </ul>
-              </li>              
+              </li>
               <!-- User Account: style can be found in dropdown.less -->
 
 <?php
@@ -156,7 +158,7 @@ else $status = "User";
                 </ul>
 
               </li>
-              
+
             </ul>
           </div>
         </nav>
@@ -183,7 +185,7 @@ else $status = "User";
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-         
+
         </section>
 
         <!-- Main content -->
@@ -232,13 +234,13 @@ else $status = "User";
                         </select>
                       </div>
                     </div>                    <div class="form-group">
-                      <label class="col-sm-2 control-label">E-mail alerts</label> 
+                      <label class="col-sm-2 control-label">E-mail alerts</label>
                       <div class="col-sm-10">
                         <input id="emailalerts" type="checkbox" class="flat-red" >
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="col-sm-2 control-label">SMS alerts</label> 
+                      <label class="col-sm-2 control-label">SMS alerts</label>
                       <div class="col-sm-10">
                         <input id="smsalerts" type="checkbox" class="flat-red" >
                       </div>
@@ -258,7 +260,7 @@ else $status = "User";
                       </div>
                     </div>
 
-                    
+
                   </div><!-- /.box-body -->
                   </form>
                   <div class="box-footer">
@@ -266,9 +268,9 @@ else $status = "User";
                         <button id="cancelButton" class="btn btn-default">Cancel</button> <button class="btn btn-primary" id="addButton">Add</button>
                     </div>
                   </div><!-- /.box-footer -->
-                
+
               </div><!-- /.box -->
-              </div>  
+              </div>
             </div>
 
         </section><!-- /.content -->
@@ -305,9 +307,11 @@ else $status = "User";
     <!-- SlimScroll 1.3.0 -->
     <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- ChartJS 1.0.1 -->
-    <script src="plugins/chartjs/Chart.min.js"></script>   
+    <script src="plugins/chartjs/Chart.min.js"></script>
 
-    <script src="plugins/iCheck/icheck.min.js"></script>  
+    <script src="plugins/iCheck/icheck.min.js"></script>
+
+    <script src="dist/js/main.js"></script>
 
     <script>
             //iCheck for checkbox and radio inputs
@@ -382,7 +386,7 @@ else $status = "User";
             }
 
           });
-   
+
       });
 
       /*$("#smsalerts").click(function(){
@@ -394,13 +398,12 @@ else $status = "User";
           else{
             $("#apikeycontain").html(' ');
           }
-          
-   
+
+
       });*/
 
 
 
-    </script>  
+    </script>
   </body>
 </html>
-
